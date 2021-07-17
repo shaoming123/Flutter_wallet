@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_wallet_app/src/pages/history.dart';
 
 class BalanceCard extends StatelessWidget {
   const BalanceCard({Key key}) : super(key: key);
@@ -74,24 +75,42 @@ class BalanceCard extends StatelessWidget {
                     ),
                     Container(
                         width: 85,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
-                            border: Border.all(color: Colors.white, width: 1)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                            SizedBox(width: 5),
-                            Text("Top up",
-                                style: TextStyle(color: Colors.white)),
-                          ],
-                        ))
+                        // ignore: deprecated_member_use
+                        child: RaisedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => history(12)),
+                              );
+                            },
+                            color: LightColor.navyBlue1,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 5),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                                side:
+                                    BorderSide(color: Colors.white, width: 1)),
+
+                            // decoration: BoxDecoration(
+                            //     borderRadius:
+                            //         BorderRadius.all(Radius.circular(12)),
+                            //     border:
+                            //         Border.all(color: Colors.white, width: 1)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 5),
+                                Text("Top up",
+                                    style: TextStyle(color: Colors.white)),
+                              ],
+                            )))
                   ],
                 ),
                 Positioned(

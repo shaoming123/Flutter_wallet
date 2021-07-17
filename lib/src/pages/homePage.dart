@@ -104,9 +104,8 @@ class _HomePageState extends State<HomePage> {
           //   ignore: deprecated_member_use
           child: Column(children: [
             ButtonTheme(
-              height: 80,
-              minWidth: 80,
-              splashColor: Color(0xfff3f3f3),
+              height: 90,
+              minWidth: 90,
               child: RaisedButton(
                 onPressed: () {
                   Navigator.push(
@@ -115,15 +114,19 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(color: Colors.white, blurRadius: 10)
-                      ]),
-                  child: Icon(Icons.transfer_within_a_station),
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
+                // child: Container(
+                //   color: Colors.white,
+                //   decoration: BoxDecoration(
+                //       boxShadow: <BoxShadow>[
+                //         BoxShadow(color: Colors.white, blurRadius: 10)
+                //       ]),
+                //   child: Icon(Icons.transfer_within_a_station),
+                // ),
+                child: Icon(Icons.transfer_within_a_station),
                 // shape: RoundedRectangleBorder(
                 //   borderRadius: BorderRadius.all(Radius.circular(20)),
                 //   // boxShadow: <BoxShadow>[
@@ -135,39 +138,46 @@ class _HomePageState extends State<HomePage> {
                 // ),
               ),
             ),
-            Text("Transfer",
-                style: GoogleFonts.muli(
-                    textStyle: Theme.of(context).textTheme.headline4,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff76797e))),
+            Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: Text("Transfer",
+                    style: GoogleFonts.muli(
+                        textStyle: Theme.of(context).textTheme.headline4,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff76797e))))
           ]),
         ),
 
         Expanded(
           //   ignore: deprecated_member_use
           child: Column(children: [
-            Container(
-              height: 80,
-              width: 80,
-              margin: EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
+            ButtonTheme(
+              height: 90,
+              minWidth: 90,
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => history(12)),
+                  );
+                },
+                padding: EdgeInsets.symmetric(vertical: 10),
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: Color(0xfff3f3f3),
-                        offset: Offset(5, 5),
-                        blurRadius: 10)
-                  ]),
-              child: Icon(Icons.call_received),
+                ),
+                child: Icon(Icons.call_received),
+              ),
             ),
-            Text("Request",
-                style: GoogleFonts.muli(
-                    textStyle: Theme.of(context).textTheme.headline4,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff76797e))),
+            Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: Text("Request",
+                    style: GoogleFonts.muli(
+                        textStyle: Theme.of(context).textTheme.headline4,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff76797e))))
           ]),
         ),
       ],

@@ -1,70 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
+import 'package:flutter_wallet_app/main.dart';
+import 'package:flutter_wallet_app/src/pages/history.dart';
 
-class BottomNavigation extends StatelessWidget {
+class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key key}) : super(key: key);
-  // BottomNavigationBarItem _icons(IconData icon) {
-  //   return BottomNavigationBarItem(
-  //       icon: Icon(
-  //         icon,
-  //       ),
-  //       // ignore: deprecated_member_use
-  //       title: Text(''));
-  // }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return BottomNavigationBar(
-  //     showUnselectedLabels: false,
-  //     showSelectedLabels: false,
-  //     selectedItemColor: LightColor.navyBlue2,
-  //     unselectedItemColor: LightColor.grey,
-  //     currentIndex: 0,
-  //     items: [
-  //       _icons(
-  //         Icons.home,
-  //       ),
-  //       _icons(Icons.history),
-  //       _icons(Icons.notifications_none),
-  //       _icons(Icons.person_outline),
-  //     ],
+  @override
+  _BottomNavigationState createState() => _BottomNavigationState();
+}
 
-  //    items: const <BottomNavigationBarItem>[
-  //     BottomNavigationBarItem(
-  //       icon: Icon(Icons.call),
-  //       label: 'Calls',
-  //     ),
-  //     BottomNavigationBarItem(
-  //       icon: Icon(Icons.camera),
-  //       label: 'Camera',
-  //     ),
-  //     BottomNavigationBarItem(
-  //       icon: Icon(Icons.chat),
-  //       label: 'Chats',
-  //     ),
-  //   ],
-  //   );
-  // }
-
+class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.call),
-          label: 'Calls',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.camera),
-          label: 'Camera',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.chat),
-          label: 'Chats',
-        ),
-      ],
+    int index = 0;
+    return Material(
+        color: Colors.lightBlue,
+        child: BottomNavigationBar(
+          currentIndex: index,
+          onTap: (int index) {
+            switch (index) {
+              case 0:
+                Navigator.pushNamed(context, "/");
+                break;
+              case 1:
+                Navigator.pushNamed(context, "/transfer");
+                break;
+              case 2:
+                Navigator.pushNamed(context, "/history");
+                break;
+            }
+          },
 
-      // currentIndex: _selectedIndex, //New
-      // onTap: _onItemTapped,
-    );
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.call),
+              label: 'Calls',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.camera),
+              label: 'Camera',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'Chats',
+            ),
+          ],
+
+          // currentIndex: _selectedIndex, //New
+          // onTap: _onItemTapped,
+        ));
   }
 }

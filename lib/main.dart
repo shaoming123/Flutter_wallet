@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/': (_) => HomePage(),
           '/transfer': (_) => MoneyTransferPage(),
-          "/request": (_) => MoneyTransferPage()
+          "/history": (_) => history(123),
         },
         // ignore: missing_return
         onGenerateRoute: (RouteSettings settings) {
