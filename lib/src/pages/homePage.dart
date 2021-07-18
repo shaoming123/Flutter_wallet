@@ -9,6 +9,9 @@ import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
 import 'history.dart';
 import 'package:flutter_wallet_app/src/widgets/title_text.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -35,10 +38,13 @@ class _HomePageState extends State<HomePage> {
         Expanded(
           child: SizedBox(),
         ),
-        Icon(
-          Icons.short_text,
-          color: Theme.of(context).iconTheme.color,
-        )
+        IconButton(
+            icon: Icon(Icons.logout),
+            color: Theme.of(context).iconTheme.color,
+            onPressed: () {
+              _auth.signOut();
+              Navigator.pushNamed(context, '/');
+            })
       ],
     );
   }

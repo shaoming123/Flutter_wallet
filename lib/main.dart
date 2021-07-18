@@ -4,10 +4,12 @@ import 'package:flutter_wallet_app/src/theme/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'src/pages/homePage.dart';
 import 'src/pages/money_transfer_page.dart';
 import 'src/widgets/customRoute.dart';
 import 'src/pages/history.dart';
+import 'src/pages/error.dart';
+import 'src/pages/loading.dart';
+import 'src/pages/auth_selector.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         routes: <String, WidgetBuilder>{
-          '/': (_) => HomePage(),
+          '/': (_) => AuthTypeSelector(),
           '/transfer': (_) => MoneyTransferPage(),
           "/history": (_) => history(123),
         },
@@ -91,52 +93,6 @@ class _AppState extends State<App> {
     return MyApp();
   }
 }
-
-class SomethingWentWrong extends StatelessWidget {
-  const SomethingWentWrong({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Center(
-      child: Text(
-        'SomethingWentWrong',
-        textDirection: TextDirection.ltr,
-      ),
-    ));
-  }
-}
-
-class Loading extends StatelessWidget {
-  const Loading({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Center(
-      child: Text(
-        'Loading',
-        textDirection: TextDirection.ltr,
-      ),
-    ));
-  }
-}
-
-class MyAwesomeApp extends StatelessWidget {
-  const MyAwesomeApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Center(
-      child: Text(
-        'MyAwesomeApp',
-        textDirection: TextDirection.ltr,
-      ),
-    ));
-  }
-}
-
 
 // class BottomNavigation extends StatefulWidget {
 //   const BottomNavigation({Key key}) : super(key: key);
