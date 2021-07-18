@@ -11,7 +11,7 @@ import 'package:flutter_wallet_app/src/widgets/title_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         SizedBox(width: 15),
         TitleText(text: "Hello,"),
         Text(' Janth,',
-            style: GoogleFonts.muli(
+            style: GoogleFonts.merriweather(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
                 color: LightColor.navyBlue2)),
@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
             Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: Text("Transfer",
-                    style: GoogleFonts.muli(
+                    style: GoogleFonts.merriweather(
                         textStyle: Theme.of(context).textTheme.headline4,
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
             Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: Text("Request",
-                    style: GoogleFonts.muli(
+                    style: GoogleFonts.merriweather(
                         textStyle: Theme.of(context).textTheme.headline4,
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -275,7 +275,7 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Text('-20 MLR',
-              style: GoogleFonts.muli(
+              style: GoogleFonts.merriweather(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: LightColor.navyBlue2))),

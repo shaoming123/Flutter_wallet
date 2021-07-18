@@ -4,7 +4,7 @@ import 'package:flutter_wallet_app/main.dart';
 import 'package:flutter_wallet_app/src/pages/history.dart';
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({Key key}) : super(key: key);
+  const BottomNavigation({Key? key}) : super(key: key);
 
   @override
   _BottomNavigationState createState() => _BottomNavigationState();

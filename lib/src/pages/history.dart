@@ -3,9 +3,10 @@ import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
 
 // ignore: camel_case_types
 class history extends StatefulWidget {
-  const history(int currentIndex, {Key key, this.color}) : super(key: key);
-
-  final Color color;
+  const history(
+    int currentIndex, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   _historyState createState() => _historyState();
