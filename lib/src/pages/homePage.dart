@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wallet_app/src/pages/history.dart';
+import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
+import 'package:flutter_wallet_app/src/pages/select_account_page.dart';
+import 'package:flutter_wallet_app/src/pages/send_money_page.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
 // ignore: unused_import
 import 'package:flutter_wallet_app/src/theme/theme.dart';
 import 'package:flutter_wallet_app/src/widgets/balance_card.dart';
-import 'package:flutter_wallet_app/main.dart';
 import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
-import 'history.dart';
+import 'HistoryPage.dart';
 import 'package:flutter_wallet_app/src/widgets/title_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,10 +22,7 @@ class _HomePageState extends State<HomePage> {
   Widget _appBar() {
     return Row(
       children: <Widget>[
-        CircleAvatar(
-          backgroundImage: NetworkImage(
-              "https://jshopping.in/images/detailed/591/ibboll-Fashion-Mens-Optical-Glasses-Frames-Classic-Square-Wrap-Frame-Luxury-Brand-Men-Clear-Eyeglasses-Frame.jpg"),
-        ),
+        CircleAvatar(backgroundImage: AssetImage('assets/face.jpg')),
         SizedBox(width: 15),
         TitleText(text: "Hello,"),
         Text(' Janth,',
@@ -47,59 +45,6 @@ class _HomePageState extends State<HomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        // Column(
-        //   children: <Widget>[
-        //     // onTap: () {
-        //     //   Navigator.pushNamed(context, '/transfer');
-        //     // },
-        //     // onTap: () {
-        //     //   Navigator.pushNamed(context, '/request');
-        //     // },
-        //     Container(
-        //       height: 80,
-        //       width: 80,
-        //       margin: EdgeInsets.symmetric(vertical: 10),
-        //       decoration: BoxDecoration(
-        //           color: Colors.white,
-        //           borderRadius: BorderRadius.all(Radius.circular(20)),
-        //           boxShadow: <BoxShadow>[
-        //             BoxShadow(
-        //                 color: Color(0xfff3f3f3),
-        //                 offset: Offset(5, 5),
-        //                 blurRadius: 10)
-        //           ]),
-        //       child: Icon(Icons.transfer_within_a_station),
-        //     ),
-        //     Text("Transfer",
-        //         style: GoogleFonts.muli(
-        //             textStyle: Theme.of(context).textTheme.headline4,
-        //             fontSize: 15,
-        //             fontWeight: FontWeight.w600,
-        //             color: Color(0xff76797e))),
-        //     Container(
-        //       height: 80,
-        //       width: 80,
-        //       margin: EdgeInsets.symmetric(vertical: 10),
-        //       decoration: BoxDecoration(
-        //           color: Colors.white,
-        //           borderRadius: BorderRadius.all(Radius.circular(20)),
-        //           boxShadow: <BoxShadow>[
-        //             BoxShadow(
-        //                 color: Color(0xfff3f3f3),
-        //                 offset: Offset(5, 5),
-        //                 blurRadius: 10)
-        //           ]),
-        //       child: Icon(Icons.call_received),
-        //     ),
-        //     Text("Request",
-        //         style: GoogleFonts.muli(
-        //             textStyle: Theme.of(context).textTheme.headline4,
-        //             fontSize: 15,
-        //             fontWeight: FontWeight.w600,
-        //             color: Color(0xff76797e))),
-        //   ],
-        // )
-
         Expanded(
           //   ignore: deprecated_member_use
           child: Column(children: [
@@ -110,7 +55,8 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => history(12)),
+                    MaterialPageRoute(
+                        builder: (context) => SelectAccountPage()),
                   );
                 },
                 padding: EdgeInsets.symmetric(vertical: 10),
@@ -118,24 +64,7 @@ class _HomePageState extends State<HomePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
-                // child: Container(
-                //   color: Colors.white,
-                //   decoration: BoxDecoration(
-                //       boxShadow: <BoxShadow>[
-                //         BoxShadow(color: Colors.white, blurRadius: 10)
-                //       ]),
-                //   child: Icon(Icons.transfer_within_a_station),
-                // ),
                 child: Icon(Icons.transfer_within_a_station),
-                // shape: RoundedRectangleBorder(
-                //   borderRadius: BorderRadius.all(Radius.circular(20)),
-                //   // boxShadow: <BoxShadow>[
-                //   //   BoxShadow(
-                //   //       color: Color(0xfff3f3f3),
-                //   //       offset: Offset(5, 5),
-                //   //       blurRadius: 10)
-                //   // ]
-                // ),
               ),
             ),
             Container(
@@ -148,7 +77,6 @@ class _HomePageState extends State<HomePage> {
                         color: Color(0xff76797e))))
           ]),
         ),
-
         Expanded(
           //   ignore: deprecated_member_use
           child: Column(children: [
@@ -159,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => history(12)),
+                    MaterialPageRoute(builder: (context) => HistoryPage()),
                   );
                 },
                 padding: EdgeInsets.symmetric(vertical: 10),
@@ -183,61 +111,6 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
-  // Widget _icon(IconData icon, String text) {
-  //   return Column(
-  //     children: <Widget>[
-  //       // onTap: () {
-  //       //   Navigator.pushNamed(context, '/transfer');
-  //       // },
-  //       // onTap: () {
-  //       //   Navigator.pushNamed(context, '/request');
-  //       // },
-  //       Container(
-  //         height: 80,
-  //         width: 80,
-  //         margin: EdgeInsets.symmetric(vertical: 10),
-  //         decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: BorderRadius.all(Radius.circular(20)),
-  //             boxShadow: <BoxShadow>[
-  //               BoxShadow(
-  //                   color: Color(0xfff3f3f3),
-  //                   offset: Offset(5, 5),
-  //                   blurRadius: 10)
-  //             ]),
-  //         child: Icon(Icons.transfer_within_a_station),
-  //       ),
-  //       Text("Transfer",
-  //           style: GoogleFonts.muli(
-  //               textStyle: Theme.of(context).textTheme.headline4,
-  //               fontSize: 15,
-  //               fontWeight: FontWeight.w600,
-  //               color: Color(0xff76797e))),
-  //       Container(
-  //         height: 80,
-  //         width: 80,
-  //         margin: EdgeInsets.symmetric(vertical: 10),
-  //         decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: BorderRadius.all(Radius.circular(20)),
-  //             boxShadow: <BoxShadow>[
-  //               BoxShadow(
-  //                   color: Color(0xfff3f3f3),
-  //                   offset: Offset(5, 5),
-  //                   blurRadius: 10)
-  //             ]),
-  //         child: Icon(Icons.call_received),
-  //       ),
-  //       Text("Request",
-  //           style: GoogleFonts.muli(
-  //               textStyle: Theme.of(context).textTheme.headline4,
-  //               fontSize: 15,
-  //               fontWeight: FontWeight.w600,
-  //               color: Color(0xff76797e))),
-  //     ],
-  //   );
-  // }
 
   Widget _transectionList() {
     return Column(

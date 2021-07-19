@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wallet_app/src/pages/Topup.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_wallet_app/src/pages/history.dart';
+import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 
 class BalanceCard extends StatelessWidget {
   const BalanceCard({Key key}) : super(key: key);
@@ -81,7 +82,7 @@ class BalanceCard extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => history(12)),
+                                    builder: (context) => Topup()),
                               );
                             },
                             color: LightColor.navyBlue1,
