@@ -1,0 +1,114 @@
+{
+  "project_info": {
+    "project_number": "1086100616495",
+    "firebase_url": "https://fireflutter-bcac9-default-rtdb.firebaseio.com",
+    "project_id": "fireflutter-bcac9",
+    "storage_bucket": "fireflutter-bcac9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086100616495:android:99edd591476a00ae0a9dda",
+        "android_client_info": {
+          "package_name": "com.example.fireauth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086100616495-gmr4g33th0c1qaoakgo7dc8lu7hrk42c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXeDgnvrbQckHKglPuM1fzI6aqLEd40uQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086100616495-gmr4g33th0c1qaoakgo7dc8lu7hrk42c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086100616495:android:0e3b15135be414bc0a9dda",
+        "android_client_info": {
+          "package_name": "com.example.flutstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086100616495-lutmhtkv9rvo1fupm904s3ehmtjdf5k5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutstore",
+            "certificate_hash": "fa45b98a54636857818c479e31f9ef4abc3615d5"
+          }
+        },
+        {
+          "client_id": "1086100616495-gmr4g33th0c1qaoakgo7dc8lu7hrk42c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXeDgnvrbQckHKglPuM1fzI6aqLEd40uQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086100616495-gmr4g33th0c1qaoakgo7dc8lu7hrk42c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086100616495:android:3507124a76335d1e0a9dda",
+        "android_client_info": {
+          "package_name": "com.thealphamerc.flutter_wallet_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086100616495-lbamjiivfn2ark75328cvq62i85pvb84.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thealphamerc.flutter_wallet_app",
+            "certificate_hash": "fa45b98a54636857818c479e31f9ef4abc3615d5"
+          }
+        },
+        {
+          "client_id": "1086100616495-gmr4g33th0c1qaoakgo7dc8lu7hrk42c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXeDgnvrbQckHKglPuM1fzI6aqLEd40uQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086100616495-gmr4g33th0c1qaoakgo7dc8lu7hrk42c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
