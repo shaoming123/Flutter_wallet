@@ -3,9 +3,41 @@ import 'package:flutter_wallet_app/src/pages/Topup.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class BalanceCard extends StatelessWidget {
-  const BalanceCard({Key key}) : super(key: key);
+final _userRef = FirebaseDatabase(
+        databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
+    .reference()
+    .child("data")
+    .child("user")
+    .child("userid")
+    .child("balance");
+
+class BalanceCard extends StatefulWidget {
+  const BalanceCard({Key? key}) : super(key: key);
+
+  @override
+  _BalanceCardState createState() => _BalanceCardState();
+}
+
+class _BalanceCardState extends State<BalanceCard> {
+  String balance = "";
+
+  String id = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBalance();
+  }
+
+  void _fetchBalance() {
+    _userRef.once().then((DataSnapshot snapshot) {
+      setState(() {
+        balance = snapshot.value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +74,8 @@ class BalanceCard extends StatelessWidget {
                               color: LightColor.yellow.withAlpha(200)),
                         ),
                         Text(
-                          '6,354',
-                          style: GoogleFonts.muli(
+                          balance,
+                          style: GoogleFonts.merriweather(
                               textStyle: Theme.of(context).textTheme.headline4,
                               fontSize: 35,
                               fontWeight: FontWeight.w800,

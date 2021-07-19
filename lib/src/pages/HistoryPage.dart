@@ -31,7 +31,7 @@ class HistoryPageState extends State<HistoryPage> {
   List<HistoryModel> CategoryResults = [];
 
   Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
@@ -126,7 +126,7 @@ class HistoryPageState extends State<HistoryPage> {
                   // ),
                   Expanded(
                     child: Container(
-                        width: 55,
+                        width: 50,
                         decoration: new BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -167,9 +167,9 @@ class HistoryPageState extends State<HistoryPage> {
                                       DropdownMenuItem(
                                           child: Text("Date"), value: 5),
                                     ],
-                                    onChanged: (value) {
+                                    onChanged: (int? value) {
                                       setState(() {
-                                        _value = value;
+                                        _value = value!;
                                         if (value == 5) {
                                           _selectDate(context);
                                         } else {

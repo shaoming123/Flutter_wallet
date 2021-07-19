@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/model/receiver_model.dart';
+import 'package:flutter_wallet_app/src/pages/error.dart';
 
 class SendMoneyPageRoute extends PageRouteBuilder {
   SendMoneyPageRoute(ReceiverModel receiver)
@@ -34,7 +35,7 @@ class SendMoneyPageRoute extends PageRouteBuilder {
 class SendMoneyPage extends StatefulWidget {
   final ReceiverModel receiver;
 
-  SendMoneyPage({this.receiver});
+  SendMoneyPage({required this.receiver});
 
   @override
   SendMoneyPageState createState() => SendMoneyPageState();
@@ -90,12 +91,13 @@ class SendMoneyPageState extends State<SendMoneyPage> {
     switch (index) {
       case 0:
         return _getReceiverSection(widget.receiver);
-        break;
+
       case 1:
         return _getEnterAmountSection();
       case 2:
         return _getSendSection();
     }
+    return SomethingWentWrong();
   }
 
   Widget _getReceiverSection(ReceiverModel receiver) {

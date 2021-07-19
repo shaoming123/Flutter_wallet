@@ -3,13 +3,20 @@ import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 import 'package:flutter_wallet_app/src/theme/theme.dart';
 // import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'src/pages/homePage.dart';
 import 'src/widgets/customRoute.dart';
 import 'src/pages/HistoryPage.dart';
 import 'src/pages/ProfilePage.dart';
+import 'src/pages/error.dart';
+import 'src/pages/loading.dart';
+import 'src/pages/auth_selector.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(App());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -19,18 +26,18 @@ class MyApp extends StatelessWidget {
         // home: BottomNavigation(),
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme.copyWith(
-          textTheme: GoogleFonts.muliTextTheme(
+          textTheme: GoogleFonts.maliTextTheme(
             Theme.of(context).textTheme,
           ),
         ),
         routes: <String, WidgetBuilder>{
-          '/': (_) => HomePage(),
+          '/': (_) => AuthTypeSelector(),
           '/history': (_) => HistoryPage(),
           "/ProfilePage": (_) => ProfilePage(),
         },
         // ignore: missing_return
         onGenerateRoute: (RouteSettings settings) {
-          final List<String> pathElements = settings.name.split('/');
+          final List<String> pathElements = settings.name!.split('/');
           if (pathElements[0] == '') {
             return null;
           }
@@ -45,8 +52,53 @@ class MyApp extends StatelessWidget {
         });
   }
 }
-  
 
+class App extends StatefulWidget {
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  // Set default `_initialized` and `_error` state to false
+  bool _initialized = false;
+  bool _error = false;
+
+  // Define an async function to initialize FlutterFire
+  void initializeFlutterFire() async {
+    try {
+      // Wait for Firebase to initialize and set `_initialized` state to true
+      await Firebase.initializeApp();
+      setState(() {
+        _initialized = true;
+      });
+    } catch (e) {
+      // Set `_error` state to true if Firebase initialization fails
+      setState(() {
+        _error = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    initializeFlutterFire();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Show error message if initialization failed
+    if (_error) {
+      return SomethingWentWrong();
+    }
+
+    // Show a loader until FlutterFire is initialized
+    if (!_initialized) {
+      return Loading();
+    }
+
+    return MyApp();
+  }
+}
 
 // class BottomNavigation extends StatefulWidget {
 //   const BottomNavigation({Key key}) : super(key: key);
