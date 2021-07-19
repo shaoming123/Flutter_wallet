@@ -181,6 +181,7 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
           content: Text('${user.email} signed in'),
         ),
       );
+      Navigator.pushNamed(context, "/");
     } catch (e) {
       Scaffold.of(context).showSnackBar(
         const SnackBar(

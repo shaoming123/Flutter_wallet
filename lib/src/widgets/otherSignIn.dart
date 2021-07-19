@@ -62,6 +62,7 @@ class _OtherProvidersSignInSectionState
       }
 
       final user = userCredential.user;
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Sign In ${user.uid} with Google'),
       ));
@@ -69,6 +70,7 @@ class _OtherProvidersSignInSectionState
       Navigator.pushNamed(context, "/");
     } catch (e) {
       print(e);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to sign in with Google: $e'),

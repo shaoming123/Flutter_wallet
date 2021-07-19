@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 import 'package:flutter_wallet_app/src/theme/theme.dart';
 // import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'src/pages/money_transfer_page.dart';
+import 'src/pages/homePage.dart';
 import 'src/widgets/customRoute.dart';
-import 'src/pages/history.dart';
+import 'src/pages/HistoryPage.dart';
+import 'src/pages/ProfilePage.dart';
 import 'src/pages/error.dart';
 import 'src/pages/loading.dart';
 import 'src/pages/auth_selector.dart';
@@ -30,8 +32,8 @@ class MyApp extends StatelessWidget {
         ),
         routes: <String, WidgetBuilder>{
           '/': (_) => AuthTypeSelector(),
-          '/transfer': (_) => MoneyTransferPage(),
-          "/history": (_) => history(123),
+          '/history': (_) => HistoryPage(),
+          "/ProfilePage": (_) => ProfilePage(),
         },
         // ignore: missing_return
         onGenerateRoute: (RouteSettings settings) {
@@ -39,9 +41,13 @@ class MyApp extends StatelessWidget {
           if (pathElements[0] == '') {
             return null;
           }
-          if (pathElements[0] == 'transfer') {
+          if (pathElements[0] == 'history') {
             return CustomRoute<bool>(
-                builder: (BuildContext context) => MoneyTransferPage());
+                builder: (BuildContext context) => HistoryPage());
+          }
+          if (pathElements[0] == 'ProfilePage') {
+            return CustomRoute<bool>(
+                builder: (BuildContext context) => ProfilePage());
           }
         });
   }
