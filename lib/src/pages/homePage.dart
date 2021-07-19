@@ -8,6 +8,7 @@ import 'package:flutter_wallet_app/src/theme/theme.dart';
 import 'package:flutter_wallet_app/src/widgets/balance_card.dart';
 import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
 import 'HistoryPage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_wallet_app/src/widgets/title_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,6 +41,7 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.logout),
             color: Theme.of(context).iconTheme.color,
             onPressed: () {
+              GoogleSignIn().disconnect();
               _auth.signOut();
               Navigator.pushNamed(context, '/');
             })
