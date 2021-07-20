@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:flutter_wallet_app/src/model/FadeAnimation.dart';
+
 import './register_page.dart';
 import './signin_page.dart';
 import './homePage.dart';
@@ -43,118 +45,101 @@ class _AuthTypeSelectorState extends State<AuthTypeSelector> {
     return isLoggedIn
         ? HomePage()
         : Scaffold(
-            backgroundColor: Color(0xffffffff),
-            body: Container(
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Align(
-                          alignment: FractionalOffset.topCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                bottom: MediaQuery.of(context).size.height / 6),
-                            child: Column(
-                              children: [
-                                ShaderMask(
-                                  shaderCallback: (rect) {
-                                    return LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [Colors.black, Colors.blueAccent],
-                                    ).createShader(
-                                        Rect.fromLTRB(0, 0, 900, 900));
-                                  },
-                                  blendMode: BlendMode.dstIn,
-                                  child: Container(
-                                    height: 200,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            'https://cdn.iconscout.com/icon/free/png-512/flutter-2038877-1720090.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(20),
-                                  child: Text(
-                                    "Welcome to our Fluuter Dev",
-                                    style: TextStyle(
-                                        color: Color(0xff161830),
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 25),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+            body: SafeArea(
+              child: Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        FadeAnimation(
+                            1,
+                            Text(
+                              "Welcome",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30),
+                            )),
+                        SizedBox(
+                          height: 20,
                         ),
-                        Align(
-                          alignment: FractionalOffset.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 30.0),
-                            child: ButtonTheme(
-                              minWidth: 400.0,
-                              height: 60,
-                              child: Container(
-                                child: RaisedButton(
-                                  onPressed: () =>
-                                      _pushPage(context, SignInPage()),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                  padding: const EdgeInsets.all(8.0),
-                                  textColor: Colors.white,
-                                  disabledTextColor: Colors.white,
-                                  disabledColor: Colors.blueAccent,
-                                  color: Colors.blueAccent,
-                                  child: new Text("Log In"),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: FractionalOffset.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 80.0),
-                            child: ButtonTheme(
-                              minWidth: 400.0,
-                              height: 60,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30.0)),
-                                ),
-                                child: RaisedButton(
-                                  onPressed: () =>
-                                      _pushPage(context, RegisterPage()),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      side:
-                                          BorderSide(color: Color(0xff789ff5))),
-                                  padding: const EdgeInsets.all(8.0),
-                                  textColor: Colors.blueAccent,
-                                  disabledColor: Colors.white,
-                                  disabledTextColor: Color(0xff161830),
-                                  color: Colors.white,
-                                  child: new Text("SignUp"),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        FadeAnimation(
+                            1.2,
+                            Text(
+                              "Digital wallet and Online payment platform application",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey[700], fontSize: 15),
+                            )),
                       ],
                     ),
-                  ),
-                ],
+                    FadeAnimation(
+                        1.4,
+                        Container(
+                          height: MediaQuery.of(context).size.height / 3,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image:
+                                      AssetImage('assets/illustration.png'))),
+                        )),
+                    Column(
+                      children: <Widget>[
+                        FadeAnimation(
+                            1.5,
+                            MaterialButton(
+                              minWidth: double.infinity,
+                              height: 60,
+                              onPressed: () => _pushPage(context, SignInPage()),
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 18),
+                              ),
+                            )),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FadeAnimation(
+                            1.6,
+                            Container(
+                              padding: EdgeInsets.only(top: 3, left: 3),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border(
+                                    bottom: BorderSide(color: Colors.black),
+                                    top: BorderSide(color: Colors.black),
+                                    left: BorderSide(color: Colors.black),
+                                    right: BorderSide(color: Colors.black),
+                                  )),
+                              child: MaterialButton(
+                                minWidth: double.infinity,
+                                height: 60,
+                                onPressed: () =>
+                                    _pushPage(context, RegisterPage()),
+                                color: Colors.yellow,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: Text(
+                                  "Sign up",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
+                                ),
+                              ),
+                            ))
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ));
+            ),
+          );
   }
 }

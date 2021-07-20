@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_wallet_app/src/model/FadeAnimation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -22,22 +23,62 @@ class _OtherProvidersSignInSectionState
     return Container(
       child: Column(
         children: [
-          Container(
-            height: 90,
-            padding: EdgeInsets.only(top: 40),
-            child: ButtonTheme(
-              minWidth: 400.0,
-              height: 100,
-              child: SignInButton(
-                Buttons.Google,
-                text: 'Sign in with Google',
-                shape: RoundedRectangleBorder(),
-                onPressed: () {
-                  _signInWithGoogle();
-                },
-              ),
-            ),
-          ),
+          FadeAnimation(
+              1.4,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                child: Container(
+                  padding: EdgeInsets.only(top: 3, left: 3),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    border: Border(
+                      bottom: BorderSide(color: Colors.black),
+                      top: BorderSide(color: Colors.black),
+                      left: BorderSide(color: Colors.black),
+                      right: BorderSide(color: Colors.black),
+                    ),
+                    // icon: Image.asset('assets/googleicon.png')
+                  ),
+                  //  icon: AnimatedIcons(Icons.android),
+                  child: MaterialButton(
+                    minWidth: double.infinity,
+                    height: 60,
+                    onPressed: () {
+                      _signInWithGoogle();
+                    },
+                    color: Colors.blueAccent,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Icon(
+                            Icons.email,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          'Sign in with Google',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18),
+                        )
+                      ],
+                      // child: Text(
+                      //   'Sign in with Google',
+                      //   style: TextStyle(
+                      //       color: Colors.white,
+                      //       fontWeight: FontWeight.w600,
+                      //       fontSize: 18),
+                      // ),
+                    ),
+                  ),
+                ),
+              )),
         ],
       ),
     );
