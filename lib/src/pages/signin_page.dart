@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_wallet_app/src/model/FadeAnimation.dart';
+import 'package:flutter_wallet_app/src/pages/register_page.dart';
 
 import '../widgets/otherSignIn.dart';
 
@@ -31,67 +33,102 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Color(0xffffffff),
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
           elevation: 0,
-          title: Text(
-            widget.title,
-            style: TextStyle(color: Color(0xff001035)),
-          ),
+          brightness: Brightness.light,
+          backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: Colors.black,
+            ),
           ),
         ),
         body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 0, left: 20, right: 20),
+              Expanded(
                 child: Column(
-                  children: [
-                    Container(
-                      width: 100,
-                      height: 100,
-                      child: Image.network(
-                          'https://cdn.iconscout.com/icon/free/png-512/flutter-2038877-1720090.png'),
-                    ),
-                    _EmailPasswordForm(),
-                    Container(
-                      padding: EdgeInsets.only(top: 20),
-                      child: ButtonTheme(
-                        minWidth: 400.0,
-                        height: 60,
-                        child: Container(
-                          child: RaisedButton(
-                            onPressed: () {
-                              print('Login successfull');
-                            },
-                            shape: RoundedRectangleBorder(),
-                            padding: const EdgeInsets.all(8.0),
-                            textColor: Colors.white,
-                            disabledTextColor: Colors.white,
-                            disabledColor: Colors.blueAccent,
-                            color: Colors.blueAccent,
-                            child: new Text("Log In"),
-                          ),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        FadeAnimation(
+                            1,
+                            Text(
+                              "Login",
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
+                            )),
+                        SizedBox(
+                          height: 20,
                         ),
+                        FadeAnimation(
+                            1.2,
+                            Text(
+                              "Login to your account",
+                              style: TextStyle(
+                                  fontSize: 15, color: Colors.grey[700]),
+                            )),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      child: Column(
+                        children: <Widget>[
+                          FadeAnimation(1.2, _EmailPasswordForm()),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text('OR'),
-                    SizedBox(
-                      height: 30,
-                    ),
                     OtherProvidersSignInSection(),
+                    FadeAnimation(
+                        1.5,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Don't have an account?"),
+                            RaisedButton(
+                              padding: EdgeInsets.all(0),
+                              elevation: 0,
+                              hoverElevation: 0,
+                              focusElevation: 0,
+                              highlightElevation: 0,
+                              color: Colors.white,
+                              child: Text(
+                                'Sign up',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 18),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RegisterPage()),
+                                );
+                              },
+                            ),
+                          ],
+                        )),
                   ],
                 ),
-              )
+              ),
+              // FadeAnimation(
+              //     1.2,
+              //     Container(
+              //       height: MediaQuery.of(context).size.height / 3,
+              //       decoration: BoxDecoration(
+              //           image: DecorationImage(
+              //               image: AssetImage('assets/background.png'),
+              //               fit: BoxFit.cover)),
+              //     ))
             ],
           ),
         ));
@@ -112,53 +149,95 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
   Widget build(BuildContext context) {
     return Form(
         key: _formKey,
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'Sign in with email and password',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+            Widget>[
+          Text(
+            "Email",
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          TextFormField(
+            obscureText: false,
+            controller: _emailController,
+            decoration: new InputDecoration(
+              labelText: 'Email',
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey[400])),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey[400])),
+            ),
+            validator: (String value) {
+              if (value.isEmpty) return 'Please enter some text';
+              return null;
+            },
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            'Password',
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87),
+          ),
+          TextFormField(
+            controller: _passwordController,
+            decoration: new InputDecoration(
+              labelText: 'Password',
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey[400])),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey[400])),
+            ),
+            validator: (String value) {
+              if (value.isEmpty) return 'Please enter some text';
+              return null;
+            },
+            obscureText: true,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          FadeAnimation(
+            1.4,
+            Container(
+              padding: EdgeInsets.only(top: 3, left: 3),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black),
+                    top: BorderSide(color: Colors.black),
+                    left: BorderSide(color: Colors.black),
+                    right: BorderSide(color: Colors.black),
+                  )),
+              child: MaterialButton(
+                minWidth: double.infinity,
+                height: 60,
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    await _signInWithEmailAndPassword();
+                  }
+                },
+                color: Colors.greenAccent,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                child: Text(
+                  "Login",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                 ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: (String value) {
-                    if (value.isEmpty) return 'Please enter some text';
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  validator: (String value) {
-                    if (value.isEmpty) return 'Please enter some text';
-                    return null;
-                  },
-                  obscureText: true,
-                ),
-                Container(
-                  padding: const EdgeInsets.only(top: 16),
-                  alignment: Alignment.center,
-                  child: SignInButton(
-                    Buttons.Email,
-                    text: 'Sign In',
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        await _signInWithEmailAndPassword();
-                      }
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ));
+        ]));
   }
 
   @override

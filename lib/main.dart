@@ -15,6 +15,7 @@ import 'src/pages/auth_selector.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(App());
 }
 
