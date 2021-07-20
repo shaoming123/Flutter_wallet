@@ -1,20 +1,14 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/Topup.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 import 'package:firebase_database/firebase_database.dart';
-
-final _userRef = FirebaseDatabase(
-        databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
-    .reference()
-    .child("data")
-    .child("user")
-    .child("userid")
-    .child("balance");
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BalanceCard extends StatefulWidget {
-  const BalanceCard({Key? key}) : super(key: key);
+  const BalanceCard({Key key}) : super(key: key);
 
   @override
   _BalanceCardState createState() => _BalanceCardState();
@@ -23,15 +17,28 @@ class BalanceCard extends StatefulWidget {
 class _BalanceCardState extends State<BalanceCard> {
   String balance = "";
   String id = "";
+  User user;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _userRef = FirebaseDatabase(
+          databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
+      .reference()
+      .child("data")
+      .child("user");
 
   @override
   void initState() {
+    user = _auth.currentUser;
     super.initState();
     _fetchBalance();
   }
 
   void _fetchBalance() {
-    _userRef.once().then((DataSnapshot snapshot) {
+    _userRef
+        .child(user.uid)
+        .child("balance")
+        .once()
+        .then((DataSnapshot snapshot) {
       setState(() {
         balance = snapshot.value;
       });
@@ -73,7 +80,7 @@ class _BalanceCardState extends State<BalanceCard> {
                               color: LightColor.yellow.withAlpha(200)),
                         ),
                         Text(
-                          balance,
+                          balance ?? "Loading",
                           style: GoogleFonts.merriweather(
                               textStyle: Theme.of(context).textTheme.headline4,
                               fontSize: 35,

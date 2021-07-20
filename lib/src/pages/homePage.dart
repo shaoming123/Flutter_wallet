@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 import 'package:flutter_wallet_app/src/pages/select_account_page.dart';
@@ -16,20 +17,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
-
+  HomePage({Key key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  User user;
+
+  @override
+  void initState() {
+    user = _auth.currentUser;
+    super.initState();
+  }
+
   Widget _appBar() {
     return Row(
       children: <Widget>[
-        CircleAvatar(backgroundImage: AssetImage('assets/face.jpg')),
+        CircleAvatar(
+            backgroundImage: user.photoURL.isNotEmpty
+                ? NetworkImage(user.photoURL)
+                : AssetImage('assets/face.jpg')),
         SizedBox(width: 15),
         TitleText(text: "Hello,"),
-        Text(' Janth,',
+        Text(user.displayName ?? "user",
             style: GoogleFonts.merriweather(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
