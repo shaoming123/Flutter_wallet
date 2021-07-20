@@ -9,6 +9,7 @@ class SomethingWentWrong extends StatelessWidget {
         child: Center(
       child: Text(
         'SomethingWentWrong',
+        style: TextStyle(color: Color(0xFFF4F4F4)),
         textDirection: TextDirection.ltr,
       ),
     ));

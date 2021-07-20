@@ -1,8 +1,9 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
+import 'package:flutter_wallet_app/src/pages/Topup.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_wallet_app/src/pages/history.dart';
+import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -119,7 +120,7 @@ class _BalanceCardState extends State<BalanceCard> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => history(12)),
+                                    builder: (context) => Topup()),
                               );
                             },
                             color: LightColor.navyBlue1,
