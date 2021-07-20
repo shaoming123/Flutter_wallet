@@ -1,5 +1,7 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/history.dart';
+import 'package:flutter_wallet_app/src/pages/loading.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
 // ignore: unused_import
 import 'package:flutter_wallet_app/src/theme/theme.dart';
@@ -15,23 +17,31 @@ import 'package:firebase_auth/firebase_auth.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
-
+  HomePage({Key key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  User user;
+
+  @override
+  void initState() {
+    user = _auth.currentUser;
+    super.initState();
+  }
+
   Widget _appBar() {
     return Row(
       children: <Widget>[
         CircleAvatar(
-          backgroundImage: NetworkImage(
-              "https://jshopping.in/images/detailed/591/ibboll-Fashion-Mens-Optical-Glasses-Frames-Classic-Square-Wrap-Frame-Luxury-Brand-Men-Clear-Eyeglasses-Frame.jpg"),
+          backgroundImage: NetworkImage(user.photoURL.isNotEmpty
+              ? user.photoURL
+              : "https://i.ibb.co/sWjrN6t/zDxXZKk.png"),
         ),
         SizedBox(width: 15),
         TitleText(text: "Hello,"),
-        Text(' Janth,',
+        Text(user.displayName ?? "user",
             style: GoogleFonts.merriweather(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
