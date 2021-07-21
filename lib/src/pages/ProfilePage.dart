@@ -1,6 +1,17 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final _userRef = FirebaseDatabase(
+        databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
+    .reference()
+    .child("data")
+    .child("user");
+User _user;
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -11,10 +22,22 @@ class MapScreenState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
+  String _displayName;
+  String _mobile;
+  String _email;
+  String _photoURL;
 
   @override
   void initState() {
-    // TODO: implement initState
+    _user = _auth.currentUser;
+    _userRef.child(_user.uid).once().then((DataSnapshot snapshot) {
+      setState(() {
+        _displayName = snapshot.value["displayName"];
+        _mobile = snapshot.value["mobile"];
+        _email = snapshot.value["email"];
+        _photoURL = snapshot.value["photoURL"];
+      });
+    });
     super.initState();
   }
 
@@ -63,11 +86,10 @@ class MapScreenState extends State<ProfilePage>
                                 //     backgroundImage:
                                 //         AssetImage('assets/face.jpg'),
                                 //         ),
-                                Image.asset(
-                                  'assets/face.jpg',
-                                  height: 85,
-                                  width: MediaQuery.of(context).size.width,
-                                )
+                                CircleAvatar(
+                                    backgroundImage: _user.photoURL.isNotEmpty
+                                        ? NetworkImage(_user.photoURL)
+                                        : AssetImage('assets/face.jpg')),
                               ],
                             ),
                           ]),
@@ -123,7 +145,7 @@ class MapScreenState extends State<ProfilePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Username',
+                                        'Display Name',
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -139,12 +161,11 @@ class MapScreenState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   new Flexible(
-                                    child: new TextField(
-                                      decoration: const InputDecoration(
-                                        hintText: "Enter Your Name",
+                                    child: new Text(
+                                      _displayName ?? "Loading",
+                                      style: TextStyle(
+                                        fontSize: 16.0,
                                       ),
-                                      enabled: !_status,
-                                      autofocus: !_status,
                                     ),
                                   ),
                                 ],
@@ -160,7 +181,7 @@ class MapScreenState extends State<ProfilePage>
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       new Text(
-                                        'Email ID',
+                                        'Email',
                                         style: TextStyle(
                                             fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
@@ -176,10 +197,11 @@ class MapScreenState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   new Flexible(
-                                    child: new TextField(
-                                      decoration: const InputDecoration(
-                                          hintText: "Enter Email ID"),
-                                      enabled: !_status,
+                                    child: Text(
+                                      _email ?? "Loading",
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -211,10 +233,11 @@ class MapScreenState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   new Flexible(
-                                    child: new TextField(
-                                      decoration: const InputDecoration(
-                                          hintText: "Enter Mobile Number"),
-                                      enabled: !_status,
+                                    child: Text(
+                                      _mobile ?? "Loading",
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                      ),
                                     ),
                                   ),
                                 ],

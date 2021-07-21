@@ -110,7 +110,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
           Container(
             margin: EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
-              child: Text(receiver.name.substring(0, 1)),
+              child: Text(receiver.displayName.substring(0, 1)),
             ),
           ),
           Expanded(
@@ -118,7 +118,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                receiver.name,
+                receiver.displayName,
                 style: TextStyle(fontWeight: FontWeight.w700),
               ),
               Row(
@@ -132,7 +132,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                     ),
                   ),
                   Text(
-                    receiver.phoneNumber,
+                    receiver.mobile,
                     style: TextStyle(fontSize: 12.0, color: Color(0xFF929091)),
                   ),
                 ],

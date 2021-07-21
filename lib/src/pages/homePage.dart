@@ -8,13 +8,19 @@ import 'package:flutter_wallet_app/src/theme/light_color.dart';
 import 'package:flutter_wallet_app/src/theme/theme.dart';
 import 'package:flutter_wallet_app/src/widgets/balance_card.dart';
 import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
-import 'HistoryPage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_wallet_app/src/widgets/title_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+import './infoValidate.dart';
+import 'HistoryPage.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+final databaseReference = FirebaseDatabase(
+        databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
+    .reference();
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -24,10 +30,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   User user;
+  bool _hasInfo = true;
 
   @override
   void initState() {
     user = _auth.currentUser;
+    databaseReference
+        .child("data")
+        .child("user")
+        .child(user.uid)
+        .once()
+        .then((DataSnapshot snapshot) {
+      if (snapshot.value["displayName"] == null ||
+          snapshot.value["mobile"] == null) {
+        setState(() {
+          _hasInfo = false;
+        });
+      }
+    });
     super.initState();
   }
 
@@ -176,44 +196,46 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        bottomNavigationBar: BottomNavigation(),
-        body: SafeArea(
-            child: SingleChildScrollView(
-          child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(height: 35),
-                  _appBar(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  TitleText(text: "My wallet"),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  BalanceCard(),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  TitleText(
-                    text: "Operations",
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  _operationsWidget(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  TitleText(
-                    text: "Transactions",
-                  ),
-                  _transectionList(),
-                ],
-              )),
-        )));
+    return !_hasInfo
+        ? InfoValidate()
+        : Scaffold(
+            bottomNavigationBar: BottomNavigation(),
+            body: SafeArea(
+                child: SingleChildScrollView(
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 35),
+                      _appBar(),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      TitleText(text: "My wallet"),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      BalanceCard(),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      TitleText(
+                        text: "Operations",
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _operationsWidget(),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      TitleText(
+                        text: "Transactions",
+                      ),
+                      _transectionList(),
+                    ],
+                  )),
+            )));
   }
 }
