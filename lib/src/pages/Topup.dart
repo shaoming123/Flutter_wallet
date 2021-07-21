@@ -1,9 +1,14 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
+import 'package:flutter_wallet_app/src/pages/homePage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
 
 class Topup extends StatefulWidget {
-  const Topup({Key? key}) : super(key: key);
+  const Topup({Key key}) : super(key: key);
 
   @override
   _TopupState createState() => _TopupState();
@@ -11,14 +16,68 @@ class Topup extends StatefulWidget {
 
 class _TopupState extends State<Topup> {
   TextEditingController _controller = TextEditingController();
-  late Razorpay _razorpay;
+  Razorpay _razorpay;
+  String amount = "";
+  String id = "";
+  String category = "";
+  String senderDisplayName = "";
+  String senderUID = "";
+  String receiverDisplayName = "";
+  String receiverUID = "";
+  String timestamp = "";
+  String transactionid = "";
+  String balance;
+  User _user;
 
+  final dateTime = DateTime.now().millisecondsSinceEpoch.toString();
+  //  Timestamp myTimeStamp = Timestamp.fromDate(currenttimestamp);
+  // final String currenttimestamp = (new DateTime.now().millisecondsSinceEpoch);
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _userRef = FirebaseDatabase(
+          databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
+      .reference()
+      .child("data");
+
+  @override
   void initState() {
     _razorpay = Razorpay();
-    super.initState();
+    _user = _auth.currentUser;
+
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+
+    super.initState();
+  }
+
+  void _TopupHis(amount) {
+    transactionid = _user.uid + dateTime;
+    print(dateTime);
+    _userRef.child("transaction").child(transactionid).set({
+      "id": _user.uid + dateTime,
+      "amount": amount,
+      "category": "Top up",
+      "timestamp": dateTime,
+      "senderDisplayName": senderDisplayName,
+      "senderUID": senderUID,
+      "receiverDisplayName": receiverDisplayName,
+      "receiverUID": _user.uid
+    });
+  }
+
+  void _fetchBalance(amount) {
+    _userRef.child("user").child(_user.uid).child("balance")
+      ..once().then((DataSnapshot snapshot) {
+        setState(() {
+          balance = snapshot.value;
+        });
+        double amountTop = double.parse(amount);
+        double userbalance = double.parse(balance);
+
+        var Total = (amountTop + userbalance).toString();
+        _userRef.child("user").child(_user.uid).update({"balance": Total});
+      });
   }
 
   @override
@@ -148,6 +207,7 @@ class _TopupState extends State<Topup> {
   }
 
   void openCheckout() async {
+    // print(topup);
     var options = {
       'key': 'rzp_test_HrKYY6mdiMRJLt',
       'amount':
@@ -175,22 +235,34 @@ class _TopupState extends State<Topup> {
   //   print(total);
   // }
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    String topupAmount =
+        (double.parse(_controller.text).roundToDouble()).toString();
+    // print(topupAmount);
+    _TopupHis(topupAmount);
+    _fetchBalance(topupAmount);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+      (Route<dynamic> route) => false,
+    );
+
     // ignore: deprecated_member_use
-    Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text("SUCCESS: " + response.paymentId!)));
+    Scaffold.of(context)
+        // ignore: deprecated_member_use
+        .showSnackBar(SnackBar(content: Text("Successful Top up ")));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     // ignore: deprecated_member_use
     Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(
-            "ERROR: " + response.code.toString() + " - " + response.message!)));
+            "ERROR: " + response.code.toString() + " - " + response.message)));
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
     // ignore: deprecated_member_use
     Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text("EXTERNAL_WALLET: " + response.walletName!)));
+        SnackBar(content: Text("EXTERNAL_WALLET: " + response.walletName)));
   }
 
   // void totala(total) {
