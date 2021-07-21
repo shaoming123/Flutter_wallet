@@ -51,9 +51,8 @@ class _TopupState extends State<Topup> {
     super.initState();
   }
 
-  void _TopupHis(amount) {
+  void _topupHis(amount) {
     transactionid = _user.uid + dateTime;
-    print(dateTime);
     _userRef.child("transaction").child(transactionid).set({
       "id": _user.uid + dateTime,
       "amount": amount,
@@ -75,8 +74,8 @@ class _TopupState extends State<Topup> {
         double amountTop = double.parse(amount);
         double userbalance = double.parse(balance);
 
-        var Total = (amountTop + userbalance).toString();
-        _userRef.child("user").child(_user.uid).update({"balance": Total});
+        var _total = (amountTop + userbalance).toString();
+        _userRef.child("user").child(_user.uid).update({"balance": _total});
       });
   }
 
@@ -167,11 +166,9 @@ class _TopupState extends State<Topup> {
                           hoverElevation: 0,
                           focusElevation: 0,
                           highlightElevation: 0,
-                          // margin: EdgeInsets.all(16.0),
                           onPressed: () {
                             openCheckout();
                           },
-
                           child: Container(
                             width: double.infinity,
                             height: 50.0,
@@ -197,9 +194,6 @@ class _TopupState extends State<Topup> {
                 ),
               ),
             ),
-
-            // _getReceiverSection(this.widget.receiver),
-            // _getEnterAmountSection()
           ],
         ),
       ),
@@ -207,7 +201,6 @@ class _TopupState extends State<Topup> {
   }
 
   void openCheckout() async {
-    // print(topup);
     var options = {
       'key': 'rzp_test_HrKYY6mdiMRJLt',
       'amount':
@@ -222,23 +215,15 @@ class _TopupState extends State<Topup> {
 
     try {
       _razorpay.open(options);
-      // totala(total);
     } catch (e) {
       debugPrint('Error: e');
     }
   }
 
-  // void totala(total) {
-  //   double test = (double.parse(_controller.text));
-  //   double word = double.parse(total);
-  //   total = word + test;
-  //   print(total);
-  // }
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     String topupAmount =
         (double.parse(_controller.text).roundToDouble()).toString();
-    // print(topupAmount);
-    _TopupHis(topupAmount);
+    _topupHis(topupAmount);
     _fetchBalance(topupAmount);
     Navigator.pushAndRemoveUntil(
       context,
@@ -264,8 +249,4 @@ class _TopupState extends State<Topup> {
     Scaffold.of(context).showSnackBar(
         SnackBar(content: Text("EXTERNAL_WALLET: " + response.walletName)));
   }
-
-  // void totala(total) {
-
-  // }
 }
