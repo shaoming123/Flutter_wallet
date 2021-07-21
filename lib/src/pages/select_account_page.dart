@@ -1,6 +1,17 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/model/receiver_model.dart';
 import 'package:flutter_wallet_app/src/pages/send_money_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final _userRef = FirebaseDatabase(
+        databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
+    .reference()
+    .child("data")
+    .child("user");
+User _user;
 
 class SelectAccountPageRoute extends PageRouteBuilder {
   SelectAccountPageRoute()
@@ -40,18 +51,27 @@ class SelectAccountPageState extends State<SelectAccountPage> {
   bool isShowSearchButton = false;
   int selectedIndex = 0;
 
-  List<ReceiverModel> receivers = [
-    ReceiverModel('Salina', '0937110938'),
-    ReceiverModel('Emily', '0937110938'),
-    ReceiverModel('Nichole', '0937110938'),
-    ReceiverModel('Jane', '0937110938'),
-    ReceiverModel('Robert', '0937110938'),
-    ReceiverModel('ting', '0937110938'),
-    ReceiverModel('asd', '0937110938'),
-    ReceiverModel('qwe', '0937110938'),
-    ReceiverModel('cvb', '0937110938'),
-    ReceiverModel('ghj', '0937110938'),
-  ];
+  List<ReceiverModel> receiversData = [];
+
+  @override
+  void initState() {
+    _user = _auth.currentUser;
+    _userRef.once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((k, v) {
+        if (_user.uid != k) {
+          setState(() {
+            receivers.add(ReceiverModel(v["uid"], v["displayName"], v["mobile"],
+                v["photoURL"], v["balance"], v["email"]));
+          });
+        }
+      });
+    });
+    print(receivers);
+    super.initState();
+  }
+
+  List<ReceiverModel> receivers = [];
 
   List<ReceiverModel> searchResults = [];
 
@@ -163,15 +183,16 @@ class SelectAccountPageState extends State<SelectAccountPage> {
             Container(
               margin: EdgeInsets.only(right: 8.0),
               child: CircleAvatar(
-                child: Text(receiver.name.substring(0, 1)),
-              ),
+                  backgroundImage: receiver.photoURL.isNotEmpty
+                      ? NetworkImage(receiver.photoURL)
+                      : AssetImage('assets/face.jpg')),
             ),
             Expanded(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  receiver.name,
+                  receiver.displayName,
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
                 Row(
@@ -185,7 +206,7 @@ class SelectAccountPageState extends State<SelectAccountPage> {
                       ),
                     ),
                     Text(
-                      receiver.phoneNumber,
+                      receiver.mobile,
                       style:
                           TextStyle(fontSize: 12.0, color: Color(0xFF929091)),
                     ),
@@ -202,8 +223,8 @@ class SelectAccountPageState extends State<SelectAccountPage> {
   void _searchTextChanged(String text) {
     isShowSearchButton = text.isNotEmpty;
     searchResults = receivers.where((i) {
-      return i.name.toLowerCase().contains(text.toLowerCase()) ||
-          i.phoneNumber.toLowerCase().contains(text.toLowerCase());
+      return i.displayName.toLowerCase().contains(text.toLowerCase()) ||
+          i.mobile.toLowerCase().contains(text.toLowerCase());
     }).toList();
     setState(() {});
   }

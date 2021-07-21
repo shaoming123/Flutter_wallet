@@ -39,9 +39,7 @@ class _OtherProvidersSignInSectionState
                       left: BorderSide(color: Colors.black),
                       right: BorderSide(color: Colors.black),
                     ),
-                    // icon: Image.asset('assets/googleicon.png')
                   ),
-                  //  icon: AnimatedIcons(Icons.android),
                   child: MaterialButton(
                     minWidth: double.infinity,
                     height: 60,
@@ -70,13 +68,6 @@ class _OtherProvidersSignInSectionState
                               fontSize: 18),
                         )
                       ],
-                      // child: Text(
-                      //   'Sign in with Google',
-                      //   style: TextStyle(
-                      //       color: Colors.white,
-                      //       fontWeight: FontWeight.w600,
-                      //       fontSize: 18),
-                      // ),
                     ),
                   ),
                 ),
@@ -116,13 +107,14 @@ class _OtherProvidersSignInSectionState
           .child(user.uid)
           .once()
           .then((DataSnapshot snapshot) {
-        print('Data : ${snapshot.value}');
         if (snapshot.value == null) {
-          databaseReference
-              .child("data")
-              .child("user")
-              .child(user.uid)
-              .set({"uid": user.uid, "balance": "0"});
+          databaseReference.child("data").child("user").child(user.uid).set({
+            "uid": user.uid,
+            "displayName": user.displayName,
+            "email": user.email,
+            "photoURL": user.photoURL,
+            "balance": "0"
+          });
         }
       });
       Navigator.pushNamed(context, "/");
