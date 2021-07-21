@@ -67,7 +67,6 @@ class SelectAccountPageState extends State<SelectAccountPage> {
         }
       });
     });
-    print(receivers);
     super.initState();
   }
 
@@ -77,7 +76,6 @@ class SelectAccountPageState extends State<SelectAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       backgroundColor: Color(0xFFF4F4F4),
       body: Center(

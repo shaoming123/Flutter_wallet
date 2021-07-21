@@ -13,6 +13,7 @@ import 'package:flutter_wallet_app/src/widgets/title_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
 
 import './infoValidate.dart';
 import 'HistoryPage.dart';
@@ -31,6 +32,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   User user;
   bool _hasInfo = true;
+  List<HistoryModel> histories = [];
 
   @override
   void initState() {
@@ -47,6 +49,44 @@ class _HomePageState extends State<HomePage> {
           _hasInfo = false;
         });
       }
+    });
+
+    databaseReference
+        .child("data")
+        .child("transaction")
+        .once()
+        .then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((k, v) {
+        DateTime _unixTimestamp =
+            DateTime.fromMillisecondsSinceEpoch(int.parse(v["timestamp"]));
+        String _date = DateFormat.yMMMMd('en_US').format(_unixTimestamp);
+        double _amount = double.parse(v["amount"]);
+        if (user.uid == v["receiverUID"] || user.uid == v["senderUID"]) {
+          setState(() {
+            if (v["category"] == "Top up") {
+              histories.add(HistoryModel(
+                  'images/ico_pay_phone.png', 'Top up', _amount, _date, true));
+            }
+            if (v["category"] == "Transfer") {
+              histories.add(HistoryModel(
+                  'images/ico_receive_money.png',
+                  'transfer to ' + v['receiverDisplayName'],
+                  _amount,
+                  _date,
+                  false));
+            }
+            if (v["category"] == "Request") {
+              histories.add(HistoryModel(
+                  'images/ico_send_money.png',
+                  'Received from ' + v['senderDisplayName'],
+                  _amount,
+                  _date,
+                  true));
+            }
+          });
+        }
+      });
     });
     super.initState();
   }
@@ -153,31 +193,34 @@ class _HomePageState extends State<HomePage> {
 
   Widget _transectionList() {
     return Column(
-      children: <Widget>[
-        _transection("Flight Ticket", "23 Feb 2020"),
-        _transection("Electricity Bill", "25 Feb 2020"),
-        _transection("Flight Ticket", "03 Mar 2020"),
-      ],
-    );
+        children: histories
+            .map((val) => _transection(val.historyAssetPath, val.historyType,
+                val.amount, val.date, val.isReceiver))
+            .take(5)
+            .toList());
   }
 
-  Widget _transection(String text, String time) {
+  Widget _transection(String historyAssetPath, String historyType,
+      double amount, String date, bool isReceiver) {
     return ListTile(
       leading: Container(
         height: 50,
         width: 50,
         decoration: BoxDecoration(
-          color: LightColor.navyBlue1,
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        child: Icon(Icons.hd, color: Colors.white),
+        child: Image.asset(
+          historyAssetPath,
+          height: 30.0,
+          width: 30.0,
+        ),
       ),
       contentPadding: EdgeInsets.symmetric(),
       title: TitleText(
-        text: text,
+        text: historyType,
         fontSize: 14,
       ),
-      subtitle: Text(time),
+      subtitle: Text(date),
       trailing: Container(
           height: 30,
           width: 60,
@@ -186,11 +229,11 @@ class _HomePageState extends State<HomePage> {
             color: LightColor.lightGrey,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          child: Text('-20 MLR',
+          child: Text(amount.toString(),
               style: GoogleFonts.merriweather(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color: LightColor.navyBlue2))),
+                  color: isReceiver ? Colors.green : Colors.red))),
     );
   }
 
@@ -231,11 +274,22 @@ class _HomePageState extends State<HomePage> {
                         height: 40,
                       ),
                       TitleText(
-                        text: "Transactions",
+                        text: "Latest Transactions",
                       ),
                       _transectionList(),
                     ],
                   )),
             )));
   }
+}
+
+class HistoryModel {
+  final String historyAssetPath;
+  final String historyType;
+  final double amount;
+  final String date;
+  final bool isReceiver;
+
+  HistoryModel(this.historyAssetPath, this.historyType, this.amount, this.date,
+      this.isReceiver);
 }

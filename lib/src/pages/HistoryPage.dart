@@ -1,6 +1,16 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final databaseReference = FirebaseDatabase(
+        databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
+    .reference()
+    .child("data");
+User _user;
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -10,28 +20,55 @@ class HistoryPage extends StatefulWidget {
 class HistoryPageState extends State<HistoryPage> {
   int _value = 1;
   var dateResult = '';
+  bool firstView = true;
+
+  @override
+  void initState() {
+    _user = _auth.currentUser;
+    databaseReference.child("transaction").once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((k, v) {
+        DateTime _unixTimestamp =
+            DateTime.fromMillisecondsSinceEpoch(int.parse(v["timestamp"]));
+        String _date = DateFormat.yMMMMd('en_US').format(_unixTimestamp);
+        double _amount = double.parse(v["amount"]);
+
+        if (_user.uid == v["receiverUID"] || _user.uid == v["senderUID"]) {
+          setState(() {
+            if (v["category"] == "Top up") {
+              histories.add(HistoryModel(
+                  'images/ico_pay_phone.png', 'Top up', _amount, _date, true));
+            }
+            if (v["category"] == "Transfer") {
+              histories.add(HistoryModel(
+                  'images/ico_receive_money.png',
+                  'transfer to ' + v['receiverDisplayName'],
+                  _amount,
+                  _date,
+                  false));
+            }
+            if (v["category"] == "Request") {
+              histories.add(HistoryModel(
+                  'images/ico_send_money.png',
+                  'Received from ' + v['senderDisplayName'],
+                  _amount,
+                  _date,
+                  true));
+            }
+          });
+        }
+      });
+    });
+    super.initState();
+  }
 
   DateTime selectedDate = DateTime.now();
-  final formattedDate = DateFormat('dd MMMM yyyy');
-  List<HistoryModel> histories = [
-    HistoryModel('images/ico_send_money.png', 'Top up', 99.0, '08 July 2021',
-        'images/ico_logo_red.png'),
-    HistoryModel('images/ico_pay_elect.png', 'Transfer to boon', 80.0,
-        '15 July 2021', 'images/ico_logo_red.png'),
-    HistoryModel('images/ico_pay_phone.png', 'Transfer to kelvin ', 30.0,
-        '08 July 2021', 'images/ico_logo_red.png'),
-    HistoryModel('images/ico_receive_money.png', 'Received from ting', 30.0,
-        '18 July 2021', 'images/ico_logo_blue.png'),
-    HistoryModel('images/ico_receive_money.png', 'Received from tang', 30.0,
-        '28 July 2021', 'images/ico_logo_blue.png'),
-    HistoryModel('images/ico_receive_money.png', 'Received from ting', 30.0,
-        '18 July 2021', 'images/ico_logo_blue.png'),
-  ];
-  // List<HistoryModel> DateResults = [];
-  List<HistoryModel> CategoryResults = [];
+  final formattedDate = DateFormat.yMMMMd('en_US');
+  List<HistoryModel> histories = [];
+  List<HistoryModel> _categoryResults = [];
 
   Future<Null> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
@@ -42,36 +79,36 @@ class HistoryPageState extends State<HistoryPage> {
         String date = formattedDate.format(selectedDate);
         _pickedDate(date);
       });
-
-    // print(formattedDate.format(selectedDate));
-    // print(DateResults);
   }
 
   void _pickedDate(date) {
-    // isShowSearchButton = text.isNotEmpty;
-    CategoryResults = histories
+    _categoryResults = histories
         .where((i) => i.date.toLowerCase().contains(date.toLowerCase()))
         .toList();
+    setState(() {
+      firstView = false;
+    });
   }
 
   var data = '';
 
   void _searchCategory(value) {
     if (value == 1) {
-      data = '';
+      data = 'All';
     } else if (value == 2) {
       data = 'Transfer';
     } else if (value == 3) {
       data = 'Received';
     } else if (value == 4) {
-      data = 'top up';
+      data = 'Top up';
     }
-    print(data);
-    print(dateResult);
-    CategoryResults = histories.where((i) {
-      return i.historyType.toLowerCase().contains(data.toLowerCase());
-      // i.date.toLowerCase().contains(dateResult.toLowerCase());
-    }).toList();
+    setState(() {
+      _categoryResults = histories.where((i) {
+        return i.historyType.toLowerCase().contains(data.toLowerCase()) ||
+            data == 'All';
+      }).toList();
+      firstView = false;
+    });
   }
 
   @override
@@ -95,35 +132,7 @@ class HistoryPageState extends State<HistoryPage> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
                 margin: const EdgeInsets.only(bottom: 10.0),
-//              height: 42.0,
                 child: Row(children: <Widget>[
-                  // Expanded(
-                  //   child: Row(
-                  //     children: <Widget>[
-                  //       // ignore: deprecated_member_use
-                  //       RaisedButton(
-                  //         padding: EdgeInsets.symmetric(
-                  //             horizontal: 50.0, vertical: 16.0),
-
-                  //         color: Colors.white,
-                  //         shape: RoundedRectangleBorder(
-                  //             borderRadius: BorderRadius.circular(10)),
-                  //         onPressed: () {
-                  //           _selectDate(context);
-                  //         },
-                  //         child: Row(children: <Widget>[
-                  //           Text(
-                  //             "Date",
-                  //             style: TextStyle(
-                  //                 fontWeight: FontWeight.w700, fontSize: 14.0),
-                  //           ),
-                  //           Icon(Icons.keyboard_arrow_down),
-                  //         ]),
-                  //         // Icon(Icons.keyboard_arrow_down)
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                   Expanded(
                     child: Container(
                         width: 50,
@@ -135,8 +144,7 @@ class HistoryPageState extends State<HistoryPage> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 1,
                               blurRadius: 4,
-                              offset:
-                                  Offset(0, 1), // changes position of shadow
+                              offset: Offset(0, 1),
                             ),
                           ],
                         ),
@@ -161,15 +169,15 @@ class HistoryPageState extends State<HistoryPage> {
                                         value: 2,
                                       ),
                                       DropdownMenuItem(
-                                          child: Text("Request"), value: 3),
+                                          child: Text("Receive"), value: 3),
                                       DropdownMenuItem(
                                           child: Text("Top up"), value: 4),
                                       DropdownMenuItem(
                                           child: Text("Date"), value: 5),
                                     ],
-                                    onChanged: (int? value) {
+                                    onChanged: (int value) {
                                       setState(() {
-                                        _value = value!;
+                                        _value = value;
                                         if (value == 5) {
                                           _selectDate(context);
                                         } else {
@@ -183,13 +191,13 @@ class HistoryPageState extends State<HistoryPage> {
             ),
             Expanded(
               child: ListView.builder(
-                  itemCount: CategoryResults.isEmpty
+                  itemCount: _categoryResults.isEmpty && firstView
                       ? histories.length
-                      : CategoryResults.length,
+                      : _categoryResults.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _historyWidget(CategoryResults.isEmpty
+                    return _historyWidget(_categoryResults.isEmpty
                         ? histories[index]
-                        : CategoryResults[index]);
+                        : _categoryResults[index]);
                   }),
             ),
           ],
@@ -243,7 +251,10 @@ class HistoryPageState extends State<HistoryPage> {
                       Text(
                         '\RM ${history.amount}',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
+                            color:
+                                history.isReceiver ? Colors.green : Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -276,8 +287,8 @@ class HistoryModel {
   final String historyType;
   final double amount;
   final String date;
-  final String cardLogoPath;
+  final bool isReceiver;
 
   HistoryModel(this.historyAssetPath, this.historyType, this.amount, this.date,
-      this.cardLogoPath);
+      this.isReceiver);
 }
