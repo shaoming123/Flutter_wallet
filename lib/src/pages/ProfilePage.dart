@@ -87,6 +87,7 @@ class MapScreenState extends State<ProfilePage>
                                 //         AssetImage('assets/face.jpg'),
                                 //         ),
                                 CircleAvatar(
+                                    radius: 40.0,
                                     backgroundImage: _user.photoURL.isNotEmpty
                                         ? NetworkImage(_user.photoURL)
                                         : AssetImage('assets/face.jpg')),

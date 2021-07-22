@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
+import 'package:flutter_wallet_app/src/pages/ScanPage.dart';
 import 'package:flutter_wallet_app/src/pages/select_account_page.dart';
 import 'package:flutter_wallet_app/src/pages/send_money_page.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
@@ -13,6 +14,8 @@ import 'package:flutter_wallet_app/src/widgets/title_text.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import './infoValidate.dart';
 import 'HistoryPage.dart';
@@ -31,6 +34,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   User user;
   bool _hasInfo = true;
+  
+
+  
 
   @override
   void initState() {
@@ -84,6 +90,32 @@ class _HomePageState extends State<HomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
+        Expanded(
+          //   ignore: deprecated_member_use
+          child: Column(children: [
+            ButtonTheme(
+              height: 90,
+              minWidth: 90,
+              child: RaisedButton(
+                onPressed: () {},
+                padding: EdgeInsets.symmetric(vertical: 10),
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Icon(Icons.document_scanner_outlined),
+              ),
+            ),
+            Container(
+                margin: const EdgeInsets.only(top: 10.0),
+                child: Text("Scan",
+                    style: GoogleFonts.merriweather(
+                        textStyle: Theme.of(context).textTheme.headline4,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff76797e))))
+          ]),
+        ),
         Expanded(
           //   ignore: deprecated_member_use
           child: Column(children: [
