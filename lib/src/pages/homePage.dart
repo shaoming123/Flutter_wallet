@@ -2,12 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 import 'package:flutter_wallet_app/src/pages/select_account_page.dart';
-import 'package:flutter_wallet_app/src/pages/send_money_page.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
 // ignore: unused_import
 import 'package:flutter_wallet_app/src/theme/theme.dart';
 import 'package:flutter_wallet_app/src/widgets/balance_card.dart';
-import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_wallet_app/src/widgets/title_text.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -246,44 +244,43 @@ class _HomePageState extends State<HomePage> {
     return !_hasInfo
         ? InfoValidate()
         : Scaffold(
-            bottomNavigationBar: BottomNavigation(),
             body: SafeArea(
                 child: SingleChildScrollView(
-              child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(height: 35),
-                      _appBar(),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      TitleText(text: "My wallet"),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      BalanceCard(),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      TitleText(
-                        text: "Operations",
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _operationsWidget(),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      TitleText(
-                        text: "Latest Transactions",
-                      ),
-                      _transectionList(),
-                    ],
-                  )),
-            )));
+            child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(height: 35),
+                    _appBar(),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    TitleText(text: "My wallet"),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    BalanceCard(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    TitleText(
+                      text: "Operations",
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _operationsWidget(),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    TitleText(
+                      text: "Latest Transactions",
+                    ),
+                    _transectionList(),
+                  ],
+                )),
+          )));
   }
 }
 
