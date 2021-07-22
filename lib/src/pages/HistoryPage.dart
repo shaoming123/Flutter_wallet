@@ -24,7 +24,11 @@ class HistoryPageState extends State<HistoryPage> {
   @override
   void initState() {
     _user = _auth.currentUser;
-    databaseReference.child("transaction").once().then((DataSnapshot snapshot) {
+    databaseReference
+        .child("transaction")
+        .orderByChild('timestamp')
+        .once()
+        .then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> values = snapshot.value;
       values.forEach((k, v) {
         DateTime _unixTimestamp =
