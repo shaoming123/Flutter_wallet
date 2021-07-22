@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
     databaseReference
         .child("data")
         .child("transaction")
+        .orderByChild('timestamp')
         .once()
         .then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> values = snapshot.value;
