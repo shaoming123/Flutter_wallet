@@ -5,7 +5,6 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:intl/intl.dart';
 
 class Topup extends StatefulWidget {
   const Topup({Key key}) : super(key: key);
@@ -30,8 +29,6 @@ class _TopupState extends State<Topup> {
   User _user;
 
   final dateTime = DateTime.now().millisecondsSinceEpoch.toString();
-  //  Timestamp myTimeStamp = Timestamp.fromDate(currenttimestamp);
-  // final String currenttimestamp = (new DateTime.now().millisecondsSinceEpoch);
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _userRef = FirebaseDatabase(
