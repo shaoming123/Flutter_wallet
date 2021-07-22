@@ -1,5 +1,7 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
+import 'package:flutter_wallet_app/src/model/Failure.dart';
+import 'package:flutter_wallet_app/src/model/Successful.dart';
 import 'package:flutter_wallet_app/src/pages/homePage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter/services.dart';
@@ -203,10 +205,11 @@ class _TopupState extends State<Topup> {
       'amount':
           (double.parse(_controller.text) * 100.roundToDouble()).toString(),
       'name': 'Ming.',
-      'description': 'Fine T-Shirt',
+      'description': 'Top up wallet',
       'prefill': {'contact': '0167108890', 'email': 'asda@sdsd.com'},
       'external': {
-        'wallets': ['paytm']
+        'wallets': [''],
+        'currency': 'MYR'
       }
     };
 
@@ -224,21 +227,26 @@ class _TopupState extends State<Topup> {
     _fetchBalance(topupAmount);
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => HomePage()),
+      MaterialPageRoute(builder: (context) => SuccessfulPage()),
       (Route<dynamic> route) => false,
     );
 
     // ignore: deprecated_member_use
-    Scaffold.of(context)
-        // ignore: deprecated_member_use
-        .showSnackBar(SnackBar(content: Text("Successful Top up ")));
+    // Scaffold.of(context)
+    //     // ignore: deprecated_member_use
+    //     .showSnackBar(SnackBar(content: Text("Successful Top up ")));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     // ignore: deprecated_member_use
-    Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(
-            "ERROR: " + response.code.toString() + " - " + response.message)));
+    // Scaffold.of(context).showSnackBar(SnackBar(
+    //     content: Text(
+    //         "ERROR: " + response.code.toString() + " - " + response.message)));
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => FailurePage()),
+      (Route<dynamic> route) => false,
+    );
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
