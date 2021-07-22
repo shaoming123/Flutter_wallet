@@ -6,10 +6,12 @@ import 'package:flutter_signin_button/button_builder.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter_wallet_app/src/model/FadeAnimation.dart';
 import 'package:flutter_wallet_app/src/pages/signin_page.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import '../widgets/otherSignIn.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+final databaseReference = FirebaseDatabase.instance.reference();
 
 class RegisterPage extends StatefulWidget {
   final String title = 'Registration';
@@ -148,6 +150,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 if (value.isEmpty) {
                                   return 'Please enter some text';
                                 }
+                                if (value.length < 6)
+                                  return 'Password should be at least 6 characters';
                                 return null;
                               },
                             ),
@@ -180,6 +184,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 if (value.isEmpty) {
                                   return 'Please enter some text';
                                 }
+                                if (value != _passwordController.text)
+                                  return 'The passwords are not matched';
                                 return null;
                               },
                             ),
@@ -281,6 +287,23 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         _success = true;
         _userEmail = user.email;
+      });
+      databaseReference
+          .child("data")
+          .child("user")
+          .child(user.uid)
+          .once()
+          .then((DataSnapshot snapshot) {
+        if (snapshot.value == null) {
+          databaseReference.child("data").child("user").child(user.uid).set({
+            "uid": user.uid,
+            "email": user.email,
+            "balance": "0",
+            "mobile": "",
+            "displayName": "",
+            "photoURL": "assets/face.jpg"
+          });
+        }
       });
     } else {
       _success = false;

@@ -181,7 +181,7 @@ class SelectAccountPageState extends State<SelectAccountPage> {
             Container(
               margin: EdgeInsets.only(right: 8.0),
               child: CircleAvatar(
-                  backgroundImage: receiver.photoURL.isNotEmpty
+                  backgroundImage: receiver.photoURL != "assets/face.jpg"
                       ? NetworkImage(receiver.photoURL)
                       : AssetImage('assets/face.jpg')),
             ),

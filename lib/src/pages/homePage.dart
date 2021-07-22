@@ -37,14 +37,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     user = _auth.currentUser;
+    print(user.photoURL);
     databaseReference
         .child("data")
         .child("user")
         .child(user.uid)
         .once()
         .then((DataSnapshot snapshot) {
-      if (snapshot.value["displayName"] == null ||
-          snapshot.value["mobile"] == null) {
+      if (snapshot.value["displayName"] == "" ||
+          snapshot.value["mobile"] == "") {
         setState(() {
           _hasInfo = false;
         });
@@ -96,7 +97,7 @@ class _HomePageState extends State<HomePage> {
     return Row(
       children: <Widget>[
         CircleAvatar(
-            backgroundImage: user.photoURL.isNotEmpty
+            backgroundImage: user.photoURL?.isNotEmpty ?? false
                 ? NetworkImage(user.photoURL)
                 : AssetImage('assets/face.jpg')),
         SizedBox(width: 15),
