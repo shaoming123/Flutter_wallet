@@ -1,6 +1,17 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/model/receiver_model.dart';
 import 'package:flutter_wallet_app/src/pages/error.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+User _user;
+final _dateTime = DateTime.now().millisecondsSinceEpoch.toString();
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final _userRef = FirebaseDatabase(
+        databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
+    .reference()
+    .child("data");
 
 class SendMoneyPageRoute extends PageRouteBuilder {
   SendMoneyPageRoute(ReceiverModel receiver)
@@ -35,20 +46,30 @@ class SendMoneyPageRoute extends PageRouteBuilder {
 class SendMoneyPage extends StatefulWidget {
   final ReceiverModel receiver;
 
-  SendMoneyPage({required this.receiver});
+  SendMoneyPage({this.receiver});
 
   @override
   SendMoneyPageState createState() => SendMoneyPageState();
 }
 
 class SendMoneyPageState extends State<SendMoneyPage> {
-  final TextEditingController amountController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
   int selectedCardIndex = 0;
+  @override
+  void initState() {
+    _user = _auth.currentUser;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       backgroundColor: Color(0xFFF4F4F4),
       body: Center(
@@ -79,8 +100,6 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                     return _getSection(index);
                   }),
             ),
-            // _getReceiverSection(this.widget.receiver),
-            // _getEnterAmountSection()
           ],
         ),
       ),
@@ -95,7 +114,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
       case 1:
         return _getEnterAmountSection();
       case 2:
-        return _getSendSection();
+        return _getSendSection(widget.receiver);
     }
     return SomethingWentWrong();
   }
@@ -110,8 +129,9 @@ class SendMoneyPageState extends State<SendMoneyPage> {
           Container(
             margin: EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
-              child: Text(receiver.displayName.substring(0, 1)),
-            ),
+                backgroundImage: receiver.photoURL.isNotEmpty
+                    ? NetworkImage(receiver.photoURL)
+                    : AssetImage('assets/face.jpg')),
           ),
           Expanded(
               child: Column(
@@ -178,7 +198,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 12.0),
                         child: TextField(
-                          controller: amountController,
+                          controller: _amountController,
                           keyboardType: TextInputType.number,
                           style: TextStyle(
                               fontSize: 30.0,
@@ -201,12 +221,88 @@ class SendMoneyPageState extends State<SendMoneyPage> {
     );
   }
 
-  Widget _getSendSection() {
+  Widget _getSendSection(ReceiverModel receiver) {
+    String _category = "transfer";
+    String transactionid = "";
+    bool _isBalanceEnough;
     return Container(
       margin: EdgeInsets.all(16.0),
       child: GestureDetector(
         onTapUp: (tapDetail) {
-          Navigator.popUntil(context, ModalRoute.withName('/'));
+          _userRef
+              .child("user")
+              .child(_user.uid)
+              .child("balance")
+              .once()
+              .then((DataSnapshot snapshot) {
+            final String _senderBalance = snapshot.value;
+            double _amountTop = double.parse(_amountController.text);
+            double _userbalance = double.parse(_senderBalance);
+            print(_amountTop);
+            print(_userbalance < _amountTop);
+            if (_userbalance > _amountTop) {
+              _isBalanceEnough = true;
+            } else {
+              _isBalanceEnough = false;
+            }
+          });
+          print('balance' + _isBalanceEnough.toString());
+          if (!_isBalanceEnough) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SomethingWentWrong(
+                        message: 'Your current balance is not enough.',
+                      )),
+            );
+          } else {
+            print("create");
+            transactionid = _user.uid + _dateTime;
+            _userRef.child("transaction").child(transactionid).set({
+              "id": _user.uid + _dateTime,
+              "amount": _amountController.text,
+              "category": _category,
+              "timestamp": _dateTime,
+              "senderDisplayName": _user.displayName,
+              "senderUID": _user.uid,
+              "receiverDisplayName": receiver.displayName,
+              "receiverUID": receiver.uid
+            });
+
+            _userRef
+                .child("user")
+                .child(_user.uid)
+                .child("balance")
+                .once()
+                .then((DataSnapshot snapshot) {
+              final String _senderBalance = snapshot.value;
+              double _amountTop = double.parse(_amountController.text);
+              double _userbalance = double.parse(_senderBalance);
+              String _total = (-_amountTop + _userbalance).toString();
+              _userRef
+                  .child("user")
+                  .child(_user.uid)
+                  .update({"balance": _total});
+            });
+
+            _userRef
+                .child("user")
+                .child(receiver.uid)
+                .child("balance")
+                .once()
+                .then((DataSnapshot snapshot) {
+              final String _senderBalance = snapshot.value;
+              double _amountTop = double.parse(_amountController.text);
+              double _userbalance = double.parse(_senderBalance);
+
+              String _total = (_amountTop + _userbalance).toString();
+              _userRef
+                  .child("user")
+                  .child(receiver.uid)
+                  .update({"balance": _total});
+            });
+            Navigator.popUntil(context, ModalRoute.withName('/'));
+          }
         },
         child: Container(
           width: double.infinity,
