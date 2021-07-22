@@ -39,25 +39,25 @@ class HistoryPageState extends State<HistoryPage> {
                 'images/ico_pay_phone.png', 'Top up', _amount, _date, true));
           }
           if (lowCategory == "transfer") {
-            histories.add(HistoryModel(
-                'images/ico_receive_money.png',
-                'transfer to ' + v['receiverDisplayName'],
-                _amount,
-                _date,
-                false));
-          }
-          if (lowCategory == "receive") {
-            histories.add(HistoryModel(
-                'images/ico_send_money.png',
-                'Received from ' + v['senderDisplayName'],
-                _amount,
-                _date,
-                true));
+            if (_user.uid == v["receiverUID"])
+              histories.add(HistoryModel(
+                  'images/ico_send_money.png',
+                  'Received from ' + v['senderDisplayName'],
+                  _amount,
+                  _date,
+                  true));
+            else
+              histories.add(HistoryModel(
+                  'images/ico_receive_money.png',
+                  'transfer to ' + v['receiverDisplayName'],
+                  _amount,
+                  _date,
+                  false));
           }
         }
-        setState(() {
-          histories = histories.reversed.toList();
-        });
+      });
+      setState(() {
+        histories = histories.reversed.toList();
       });
     });
     super.initState();

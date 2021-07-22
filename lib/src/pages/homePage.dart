@@ -35,7 +35,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     user = _auth.currentUser;
-    print(user.photoURL);
     databaseReference
         .child("data")
         .child("user")
@@ -61,31 +60,31 @@ class _HomePageState extends State<HomePage> {
             DateTime.fromMillisecondsSinceEpoch(int.parse(v["timestamp"]));
         String _date = DateFormat.yMMMMd('en_US').format(_unixTimestamp);
         double _amount = double.parse(v["amount"]);
-        if (user.uid == v["receiverUID"] || user.uid == v["senderUID"]) {
-          String lowCategory = v["category"].toString().toLowerCase();
-          setState(() {
+        setState(() {
+          if (user.uid == v["receiverUID"] || user.uid == v["senderUID"]) {
+            String lowCategory = v["category"].toString().toLowerCase();
             if (lowCategory == "top up") {
               histories.add(HistoryModel(
                   'images/ico_pay_phone.png', 'Top up', _amount, _date, true));
             }
             if (lowCategory == "transfer") {
-              histories.add(HistoryModel(
-                  'images/ico_receive_money.png',
-                  'transfer to ' + v['receiverDisplayName'],
-                  _amount,
-                  _date,
-                  false));
+              if (user.uid == v["receiverUID"])
+                histories.add(HistoryModel(
+                    'images/ico_send_money.png',
+                    'Received from ' + v['senderDisplayName'],
+                    _amount,
+                    _date,
+                    true));
+              else
+                histories.add(HistoryModel(
+                    'images/ico_receive_money.png',
+                    'transfer to ' + v['receiverDisplayName'],
+                    _amount,
+                    _date,
+                    false));
             }
-            if (lowCategory == "receive") {
-              histories.add(HistoryModel(
-                  'images/ico_send_money.png',
-                  'Received from ' + v['senderDisplayName'],
-                  _amount,
-                  _date,
-                  true));
-            }
-          });
-        }
+          }
+        });
       });
     });
     super.initState();
