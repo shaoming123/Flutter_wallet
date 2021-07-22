@@ -79,7 +79,10 @@ class MapScreenState extends State<ProfilePage>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             CircleAvatar(
-                                backgroundImage: _user.photoURL.isNotEmpty
+                                backgroundImage: _user.photoURL
+                                            ?.toLowerCase()
+                                            ?.contains('null') ==
+                                        false
                                     ? NetworkImage(_user.photoURL)
                                     : AssetImage('assets/face.jpg')),
                           ],

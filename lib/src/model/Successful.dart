@@ -24,11 +24,8 @@ class SuccessfulPage extends StatelessWidget {
                   ),
                   Text(
                     'Payment Successful!',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight:
-                            FontWeight.bold // insert your font size here
-                        ),
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 30,
@@ -49,10 +46,7 @@ class SuccessfulPage extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                      );
+                      Navigator.pushNamed(context, "/");
                     },
                   ),
                 ]))));

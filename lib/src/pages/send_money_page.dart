@@ -1,5 +1,7 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
+import 'package:flutter_wallet_app/src/model/Failure.dart';
+import 'package:flutter_wallet_app/src/model/Successful.dart';
 import 'package:flutter_wallet_app/src/model/receiver_model.dart';
 import 'package:flutter_wallet_app/src/pages/error.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -129,7 +131,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
           Container(
             margin: EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
-                backgroundImage: receiver.photoURL.isNotEmpty
+                backgroundImage: receiver.photoURL != "assets/face.jpg"
                     ? NetworkImage(receiver.photoURL)
                     : AssetImage('assets/face.jpg')),
           ),
@@ -238,25 +240,18 @@ class SendMoneyPageState extends State<SendMoneyPage> {
             final String _senderBalance = snapshot.value;
             double _amountTop = double.parse(_amountController.text);
             double _userbalance = double.parse(_senderBalance);
-            print(_amountTop);
-            print(_userbalance < _amountTop);
             if (_userbalance > _amountTop) {
               _isBalanceEnough = true;
             } else {
               _isBalanceEnough = false;
             }
           });
-          print('balance' + _isBalanceEnough.toString());
           if (!_isBalanceEnough) {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => SomethingWentWrong(
-                        message: 'Your current balance is not enough.',
-                      )),
+              MaterialPageRoute(builder: (context) => FailurePage()),
             );
           } else {
-            print("create");
             transactionid = _user.uid + _dateTime;
             _userRef.child("transaction").child(transactionid).set({
               "id": _user.uid + _dateTime,
@@ -301,7 +296,10 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                   .child(receiver.uid)
                   .update({"balance": _total});
             });
-            Navigator.popUntil(context, ModalRoute.withName('/'));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SuccessfulPage()),
+            );
           }
         },
         child: Container(
