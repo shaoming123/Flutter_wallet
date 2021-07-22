@@ -97,9 +97,10 @@ class _HomePageState extends State<HomePage> {
     return Row(
       children: <Widget>[
         CircleAvatar(
-            backgroundImage: user.photoURL?.isNotEmpty ?? false
-                ? NetworkImage(user.photoURL)
-                : AssetImage('assets/face.jpg')),
+            backgroundImage:
+                user.photoURL?.toLowerCase()?.contains('null') == false
+                    ? NetworkImage(user.photoURL)
+                    : AssetImage('assets/face.jpg')),
         SizedBox(width: 15),
         TitleText(text: "Hello,"),
         Text(user.displayName ?? "user",

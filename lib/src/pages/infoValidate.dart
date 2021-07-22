@@ -29,9 +29,10 @@ class MapScreenState extends State<InfoValidate>
 
   void setUserData() {
     setState(() {
-      _displayNameController = user.displayName.isEmpty ?? true
-          ? ""
-          : TextEditingController(text: user.displayName);
+      _displayNameController =
+          user.displayName?.toLowerCase()?.contains('null') == true
+              ? ""
+              : TextEditingController(text: user.displayName);
     });
   }
 
@@ -74,10 +75,12 @@ class MapScreenState extends State<InfoValidate>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             CircleAvatar(
-                                backgroundImage:
-                                    user.photoURL?.isNotEmpty ?? false
-                                        ? NetworkImage(user.photoURL)
-                                        : AssetImage('assets/face.jpg')),
+                                backgroundImage: user.photoURL
+                                            ?.toLowerCase()
+                                            ?.contains('null') ==
+                                        false
+                                    ? NetworkImage(user.photoURL)
+                                    : AssetImage('assets/face.jpg')),
                           ],
                         ),
                       ]),
