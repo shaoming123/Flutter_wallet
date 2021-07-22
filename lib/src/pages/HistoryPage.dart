@@ -1,6 +1,5 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
-import 'package:flutter_wallet_app/src/widgets/bottom_navigation_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -116,7 +115,6 @@ class HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigation(),
       backgroundColor: Color(0xFFF4F4F4),
       body: Container(
         child: Column(

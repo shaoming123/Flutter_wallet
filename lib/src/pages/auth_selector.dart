@@ -10,6 +10,7 @@ import 'package:flutter_wallet_app/src/model/FadeAnimation.dart';
 import './register_page.dart';
 import './signin_page.dart';
 import './homePage.dart';
+import './hall.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -43,7 +44,7 @@ class _AuthTypeSelectorState extends State<AuthTypeSelector> {
   @override
   Widget build(BuildContext context) {
     return isLoggedIn
-        ? HomePage()
+        ? Hall()
         : Scaffold(
             body: SafeArea(
               child: Container(
