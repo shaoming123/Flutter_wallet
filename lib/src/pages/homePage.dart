@@ -63,12 +63,13 @@ class _HomePageState extends State<HomePage> {
         String _date = DateFormat.yMMMMd('en_US').format(_unixTimestamp);
         double _amount = double.parse(v["amount"]);
         if (user.uid == v["receiverUID"] || user.uid == v["senderUID"]) {
+          String lowCategory = v["category"].toString().toLowerCase();
           setState(() {
-            if (v["category"] == "Top up") {
+            if (lowCategory == "top up") {
               histories.add(HistoryModel(
                   'images/ico_pay_phone.png', 'Top up', _amount, _date, true));
             }
-            if (v["category"] == "Transfer") {
+            if (lowCategory == "transfer") {
               histories.add(HistoryModel(
                   'images/ico_receive_money.png',
                   'transfer to ' + v['receiverDisplayName'],
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                   _date,
                   false));
             }
-            if (v["category"] == "Request") {
+            if (lowCategory == "receive") {
               histories.add(HistoryModel(
                   'images/ico_send_money.png',
                   'Received from ' + v['senderDisplayName'],
@@ -196,6 +197,8 @@ class _HomePageState extends State<HomePage> {
         children: histories
             .map((val) => _transection(val.historyAssetPath, val.historyType,
                 val.amount, val.date, val.isReceiver))
+            .toList()
+            .reversed
             .take(5)
             .toList());
   }
