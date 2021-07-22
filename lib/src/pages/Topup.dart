@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/model/Failure.dart';
 import 'package:flutter_wallet_app/src/model/Successful.dart';
-import 'package:flutter_wallet_app/src/pages/homePage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';

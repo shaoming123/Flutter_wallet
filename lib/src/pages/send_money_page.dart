@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/model/Failure.dart';
+import 'package:flutter_wallet_app/src/model/Successful.dart';
 import 'package:flutter_wallet_app/src/model/receiver_model.dart';
 import 'package:flutter_wallet_app/src/pages/error.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -130,7 +131,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
           Container(
             margin: EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
-                backgroundImage: receiver.photoURL.isNotEmpty
+                backgroundImage: receiver.photoURL != "assets/face.jpg"
                     ? NetworkImage(receiver.photoURL)
                     : AssetImage('assets/face.jpg')),
           ),
@@ -295,7 +296,10 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                   .child(receiver.uid)
                   .update({"balance": _total});
             });
-            Navigator.popUntil(context, ModalRoute.withName('/'));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SuccessfulPage()),
+            );
           }
         },
         child: Container(
