@@ -34,29 +34,31 @@ class HistoryPageState extends State<HistoryPage> {
         double _amount = double.parse(v["amount"]);
 
         if (_user.uid == v["receiverUID"] || _user.uid == v["senderUID"]) {
-          setState(() {
-            if (v["category"] == "Top up") {
-              histories.add(HistoryModel(
-                  'images/ico_pay_phone.png', 'Top up', _amount, _date, true));
-            }
-            if (v["category"] == "Transfer") {
-              histories.add(HistoryModel(
-                  'images/ico_receive_money.png',
-                  'transfer to ' + v['receiverDisplayName'],
-                  _amount,
-                  _date,
-                  false));
-            }
-            if (v["category"] == "Request") {
-              histories.add(HistoryModel(
-                  'images/ico_send_money.png',
-                  'Received from ' + v['senderDisplayName'],
-                  _amount,
-                  _date,
-                  true));
-            }
-          });
+          String lowCategory = v["category"].toString().toLowerCase();
+          if (lowCategory == "top up") {
+            histories.add(HistoryModel(
+                'images/ico_pay_phone.png', 'Top up', _amount, _date, true));
+          }
+          if (lowCategory == "transfer") {
+            histories.add(HistoryModel(
+                'images/ico_receive_money.png',
+                'transfer to ' + v['receiverDisplayName'],
+                _amount,
+                _date,
+                false));
+          }
+          if (lowCategory == "receive") {
+            histories.add(HistoryModel(
+                'images/ico_send_money.png',
+                'Received from ' + v['senderDisplayName'],
+                _amount,
+                _date,
+                true));
+          }
         }
+        setState(() {
+          histories = histories.reversed.toList();
+        });
       });
     });
     super.initState();
@@ -169,7 +171,7 @@ class HistoryPageState extends State<HistoryPage> {
                                         value: 2,
                                       ),
                                       DropdownMenuItem(
-                                          child: Text("Receive"), value: 3),
+                                          child: Text("Received"), value: 3),
                                       DropdownMenuItem(
                                           child: Text("Top up"), value: 4),
                                       DropdownMenuItem(
