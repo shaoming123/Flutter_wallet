@@ -20,7 +20,6 @@ class MapScreenState extends State<InfoValidate>
   final FocusNode myFocusNode = FocusNode();
   TextEditingController _displayNameController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
-  bool _loading;
 
   @override
   void initState() {
@@ -31,7 +30,7 @@ class MapScreenState extends State<InfoValidate>
 
   void setUserData() {
     setState(() {
-      _displayNameController = user.displayName.isEmpty
+      _displayNameController = user.displayName.isEmpty ?? true
           ? ""
           : TextEditingController(text: user.displayName);
     });
@@ -76,9 +75,10 @@ class MapScreenState extends State<InfoValidate>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             CircleAvatar(
-                                backgroundImage: user.photoURL.isNotEmpty
-                                    ? NetworkImage(user.photoURL)
-                                    : AssetImage('assets/face.jpg')),
+                                backgroundImage:
+                                    user.photoURL?.isNotEmpty ?? false
+                                        ? NetworkImage(user.photoURL)
+                                        : AssetImage('assets/face.jpg')),
                           ],
                         ),
                       ]),

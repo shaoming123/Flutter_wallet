@@ -113,7 +113,8 @@ class _OtherProvidersSignInSectionState
             "displayName": user.displayName,
             "email": user.email,
             "photoURL": user.photoURL,
-            "balance": "0"
+            "balance": "0",
+            "mobile": ""
           });
         }
       });
