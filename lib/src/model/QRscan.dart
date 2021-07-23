@@ -50,7 +50,9 @@ class _QRscreenState extends State<QRscreen> {
       "receiverUID": _user.uid
     };
     setState(() {
-      _message = _json.toString();
+      _message = jsonEncode(_json);
+      Map _qrjson = jsonDecode(_message);
+      print(_qrjson);
     });
     super.initState();
   }
