@@ -1,7 +1,7 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
-import 'package:flutter_wallet_app/src/pages/ScanPage.dart';
+import 'package:flutter_wallet_app/src/model/QRscan.dart';
 import 'package:flutter_wallet_app/src/pages/select_account_page.dart';
 import 'package:flutter_wallet_app/src/theme/light_color.dart';
 // ignore: unused_import
@@ -13,8 +13,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
-
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import './infoValidate.dart';
 import 'HistoryPage.dart';
@@ -135,7 +133,9 @@ class _HomePageState extends State<HomePage> {
               height: 90,
               minWidth: 90,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  scanQR();
+                },
                 padding: EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -196,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HistoryPage()),
+                    MaterialPageRoute(builder: (context) => QRscreen()),
                   );
                 },
                 padding: EdgeInsets.symmetric(vertical: 10),

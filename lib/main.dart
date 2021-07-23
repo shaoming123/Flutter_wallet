@@ -3,6 +3,7 @@ import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 import 'package:flutter_wallet_app/src/theme/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:one_context/one_context.dart';
 
 import 'src/widgets/customRoute.dart';
 import 'src/pages/HistoryPage.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Wallet App',
-        // home: BottomNavigation(),
+        navigatorKey: OneContext().navigator.key,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme.copyWith(
           textTheme: GoogleFonts.merriweatherTextTheme(
@@ -57,20 +58,16 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  // Set default `_initialized` and `_error` state to false
   bool _initialized = false;
   bool _error = false;
 
-  // Define an async function to initialize FlutterFire
   void initializeFlutterFire() async {
     try {
-      // Wait for Firebase to initialize and set `_initialized` state to true
       await Firebase.initializeApp();
       setState(() {
         _initialized = true;
       });
     } catch (e) {
-      // Set `_error` state to true if Firebase initialization fails
       setState(() {
         _error = true;
       });
@@ -85,12 +82,10 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    // Show error message if initialization failed
     if (_error) {
       return SomethingWentWrong();
     }
 
-    // Show a loader until FlutterFire is initialized
     if (!_initialized) {
       return Loading();
     }

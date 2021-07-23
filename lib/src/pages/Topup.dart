@@ -229,18 +229,9 @@ class _TopupState extends State<Topup> {
       MaterialPageRoute(builder: (context) => SuccessfulPage()),
       (Route<dynamic> route) => false,
     );
-
-    // ignore: deprecated_member_use
-    // Scaffold.of(context)
-    //     // ignore: deprecated_member_use
-    //     .showSnackBar(SnackBar(content: Text("Successful Top up ")));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    // ignore: deprecated_member_use
-    // Scaffold.of(context).showSnackBar(SnackBar(
-    //     content: Text(
-    //         "ERROR: " + response.code.toString() + " - " + response.message)));
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => FailurePage()),
