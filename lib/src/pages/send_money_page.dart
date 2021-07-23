@@ -131,9 +131,9 @@ class SendMoneyPageState extends State<SendMoneyPage> {
           Container(
             margin: EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
-                backgroundImage: receiver.photoURL != "assets/face.jpg"
-                    ? NetworkImage(receiver.photoURL)
-                    : AssetImage('assets/face.jpg')),
+              backgroundImage: receiver.photoURL != "assets/face.jpg"
+                  ? NetworkImage(receiver.photoURL)
+                  : AssetImage('assets/face.jpg')),
           ),
           Expanded(
               child: Column(
@@ -224,9 +224,11 @@ class SendMoneyPageState extends State<SendMoneyPage> {
   }
 
   Widget _getSendSection(ReceiverModel receiver) {
+    bool _isBalanceEnough;
     String _category = "transfer";
     String transactionid = "";
-    bool _isBalanceEnough;
+    final dateTime = DateTime.now().millisecondsSinceEpoch.toString();
+    transactionid = _user.uid + dateTime;
     return Container(
       margin: EdgeInsets.all(16.0),
       child: GestureDetector(
@@ -240,7 +242,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
             final String _senderBalance = snapshot.value;
             double _amountTop = double.parse(_amountController.text);
             double _userbalance = double.parse(_senderBalance);
-            if (_userbalance > _amountTop) {
+            if (_userbalance >= _amountTop) {
               _isBalanceEnough = true;
             } else {
               _isBalanceEnough = false;
@@ -252,9 +254,8 @@ class SendMoneyPageState extends State<SendMoneyPage> {
               MaterialPageRoute(builder: (context) => FailurePage()),
             );
           } else {
-            transactionid = _user.uid + _dateTime;
             _userRef.child("transaction").child(transactionid).set({
-              "id": _user.uid + _dateTime,
+              "id": transactionid,
               "amount": _amountController.text,
               "category": _category,
               "timestamp": _dateTime,
@@ -263,7 +264,6 @@ class SendMoneyPageState extends State<SendMoneyPage> {
               "receiverDisplayName": receiver.displayName,
               "receiverUID": receiver.uid
             });
-
             _userRef
                 .child("user")
                 .child(_user.uid)
@@ -296,6 +296,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                   .child(receiver.uid)
                   .update({"balance": _total});
             });
+
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => SuccessfulPage()),

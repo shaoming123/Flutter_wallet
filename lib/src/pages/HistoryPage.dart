@@ -41,22 +41,20 @@ class HistoryPageState extends State<HistoryPage> {
           if (lowCategory == "top up") {
             histories.add(HistoryModel(
                 'images/ico_pay_phone.png', 'Top up', _amount, _date, true));
-          }
-          if (lowCategory == "transfer") {
-            if (_user.uid == v["receiverUID"])
-              histories.add(HistoryModel(
-                  'images/ico_send_money.png',
-                  'Received from ' + v['senderDisplayName'],
-                  _amount,
-                  _date,
-                  true));
-            else
-              histories.add(HistoryModel(
-                  'images/ico_receive_money.png',
-                  'transfer to ' + v['receiverDisplayName'],
-                  _amount,
-                  _date,
-                  false));
+          } else if (_user.uid == v["receiverUID"]) {
+            histories.add(HistoryModel(
+                'images/ico_send_money.png',
+                'Received from ' + v['senderDisplayName'],
+                _amount,
+                _date,
+                true));
+          } else if (lowCategory == "transfer") {
+            histories.add(HistoryModel(
+                'images/ico_receive_money.png',
+                'Transfer to \n' + v['receiverDisplayName'],
+                _amount,
+                _date,
+                false));
           }
         }
       });
