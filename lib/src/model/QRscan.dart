@@ -7,14 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-final _dbRef = FirebaseDatabase(
-        databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
-    .reference()
-    .child("data");
 User _user = _auth.currentUser;
 
 Future<void> scanQR() async {
@@ -51,8 +46,6 @@ class _QRscreenState extends State<QRscreen> {
     };
     setState(() {
       _message = jsonEncode(_json);
-      Map _qrjson = jsonDecode(_message);
-      print(_qrjson);
     });
     super.initState();
   }
@@ -96,6 +89,23 @@ class _QRscreenState extends State<QRscreen> {
         child: Container(
           child: Column(
             children: <Widget>[
+              Padding(
+                  padding:
+                      const EdgeInsets.only(top: 30.0, left: 16.0, right: 16.0),
+                  child: Row(
+                    children: <Widget>[
+                      IconButton(
+                          icon: Icon(Icons.arrow_back),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
+                      Text(
+                        'Receive Money',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20.0),
+                      ),
+                    ],
+                  )),
               Expanded(
                 child: Center(
                   child: Container(
@@ -103,11 +113,6 @@ class _QRscreenState extends State<QRscreen> {
                     child: qrFutureBuilder,
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40)
-                    .copyWith(bottom: 40),
-                child: Text(_message),
               ),
             ],
           ),
