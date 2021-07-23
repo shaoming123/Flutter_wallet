@@ -134,7 +134,6 @@ class SendMoneyPageState extends State<SendMoneyPage> {
               backgroundImage: receiver.photoURL != "assets/face.jpg"
                   ? NetworkImage(receiver.photoURL)
                   : AssetImage('assets/face.jpg')),
-            ),
           ),
           Expanded(
               child: Column(
