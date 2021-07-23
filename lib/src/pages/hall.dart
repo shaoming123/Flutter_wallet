@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 import 'package:flutter_wallet_app/src/pages/ProfilePage.dart';
 import 'package:flutter_wallet_app/src/pages/homePage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Hall extends StatefulWidget {
   const Hall({Key? key}) : super(key: key);
@@ -48,7 +49,10 @@ class _HallState extends State<Hall> {
                 : Image.asset('images/ico_home.png'),
             title: Text(
               'Home',
-              style: TextStyle(color: Colors.black),
+              style: GoogleFonts.roboto(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14),
             ),
           ),
           BottomNavigationBarItem(
@@ -57,7 +61,10 @@ class _HallState extends State<Hall> {
                 : Image.asset('images/ico_history.png'),
             title: Text(
               'History',
-              style: TextStyle(color: Colors.black),
+              style: GoogleFonts.roboto(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14),
             ),
           ),
           BottomNavigationBarItem(
@@ -66,7 +73,10 @@ class _HallState extends State<Hall> {
                 : Image.asset('images/ico_profile.png'),
             title: Text(
               'Profile',
-              style: TextStyle(color: Colors.black),
+              style: GoogleFonts.roboto(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14),
             ),
           ),
         ],
