@@ -131,10 +131,9 @@ class SendMoneyPageState extends State<SendMoneyPage> {
           Container(
             margin: EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
-              // backgroundImage: receiver.photoURL != "assets/face.jpg"
-              //     ? NetworkImage(receiver.photoURL)
-              //     : AssetImage('assets/face.jpg')),
-              child: Text(receiver.displayName.substring(0, 1)),
+              backgroundImage: receiver.photoURL != "assets/face.jpg"
+                  ? NetworkImage(receiver.photoURL)
+                  : AssetImage('assets/face.jpg')),
             ),
           ),
           Expanded(
