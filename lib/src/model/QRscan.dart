@@ -7,17 +7,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_wallet_app/src/model/receiver_model.dart';
+import 'package:flutter_wallet_app/src/pages/send_money_page.dart';
+import 'package:one_context/one_context.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 User _user = _auth.currentUser;
+final _userRef = FirebaseDatabase(
+        databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
+    .reference()
+    .child("data")
+    .child("user");
 
 Future<void> scanQR() async {
   String barcodeScanRes;
+  ReceiverModel _receiver;
   try {
     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.QR);
-    //after scanned, create transaction id here
+
+    await _userRef.child(barcodeScanRes).once().then((DataSnapshot snapshot) {
+      _receiver = ReceiverModel(
+        snapshot.value["uid"],
+        snapshot.value["displayName"],
+        snapshot.value["mobile"],
+        snapshot.value["photoURL"],
+        snapshot.value["balance"],
+        snapshot.value["email"],
+      );
+    });
+    OneContext().push(
+        MaterialPageRoute(builder: (_) => SendMoneyPage(receiver: _receiver)));
   } on PlatformException {
     barcodeScanRes = 'Failed to get platform version.';
   }
@@ -29,23 +51,12 @@ class QRscreen extends StatefulWidget {
 }
 
 class _QRscreenState extends State<QRscreen> {
-  final dateTime = DateTime.now().millisecondsSinceEpoch.toString();
   String _message = "qr code";
   @override
   void initState() {
-    String _transactionid = _user.uid + dateTime;
-    Map<String, String> _json = {
-      "id": _transactionid,
-      "amount": "",
-      "category": "Transfer",
-      "timestamp": dateTime,
-      "senderDisplayName": "",
-      "senderUID": "",
-      "receiverDisplayName": _user.displayName,
-      "receiverUID": _user.uid
-    };
+    String _json = _user.uid;
     setState(() {
-      _message = jsonEncode(_json);
+      _message = _json.toString();
     });
     super.initState();
   }
