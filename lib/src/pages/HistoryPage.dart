@@ -1,5 +1,6 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -33,8 +34,8 @@ class HistoryPageState extends State<HistoryPage> {
       values.forEach((k, v) {
         DateTime _unixTimestamp =
             DateTime.fromMillisecondsSinceEpoch(int.parse(v["timestamp"]));
-        String _date = DateFormat.yMMMMd('en_US').format(_unixTimestamp);
-        double _amount = double.parse(v["amount"]);
+        String _date = DateFormat('dd MMMM yyyy').format(_unixTimestamp);
+        double _amount = double.parse((v["amount"]));
 
         if (_user.uid == v["receiverUID"] || _user.uid == v["senderUID"]) {
           String lowCategory = v["category"].toString().toLowerCase();
@@ -127,7 +128,8 @@ class HistoryPageState extends State<HistoryPage> {
                   const EdgeInsets.only(left: 15.0, top: 50.0, bottom: 25.0),
               child: Text(
                 'Transactions History',
-                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20.0),
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w900, fontSize: 22.0),
               ),
             ),
             Padding(
@@ -163,19 +165,47 @@ class HistoryPageState extends State<HistoryPage> {
                                     elevation: 16,
                                     items: [
                                       DropdownMenuItem(
-                                        child: Text("All"),
+                                        child: Text(
+                                          "All",
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500),
+                                        ),
                                         value: 1,
                                       ),
                                       DropdownMenuItem(
-                                        child: Text("Transfer"),
+                                        child: Text(
+                                          "Transfer",
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500),
+                                        ),
                                         value: 2,
                                       ),
                                       DropdownMenuItem(
-                                          child: Text("Received"), value: 3),
+                                          child: Text(
+                                            "Received",
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          value: 3),
                                       DropdownMenuItem(
-                                          child: Text("Top up"), value: 4),
+                                          child: Text(
+                                            "Top up",
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          value: 4),
                                       DropdownMenuItem(
-                                          child: Text("Date"), value: 5),
+                                          child: Text(
+                                            "Date",
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          value: 5),
                                     ],
                                     onChanged: (int value) {
                                       setState(() {
@@ -236,8 +266,8 @@ class HistoryPageState extends State<HistoryPage> {
                       children: <Widget>[
                         Text(
                           history.historyType,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 13),
+                          style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold, fontSize: 14),
                           textAlign: TextAlign.left,
                         ),
                       ]),
@@ -251,12 +281,17 @@ class HistoryPageState extends State<HistoryPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        '\RM ${history.amount}',
-                        style: TextStyle(
+                        history.isReceiver
+                            ? '\ + RM ${history.amount}'
+                            : '\ - RM ${history.amount}',
+                        style: GoogleFonts.roboto(
                             color:
                                 history.isReceiver ? Colors.green : Colors.red,
                             fontWeight: FontWeight.bold,
                             fontSize: 14),
+                      ),
+                      SizedBox(
+                        height: 5,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -266,8 +301,8 @@ class HistoryPageState extends State<HistoryPage> {
                             child: Text(
                               ' ${history.date}',
                               textAlign: TextAlign.right,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal, fontSize: 13),
+                              style: GoogleFonts.roboto(
+                                  fontWeight: FontWeight.w500, fontSize: 13),
                             ),
                           ),
                         ],

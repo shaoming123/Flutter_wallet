@@ -6,6 +6,7 @@ import 'package:flutter_wallet_app/src/model/receiver_model.dart';
 import 'package:flutter_wallet_app/src/pages/error.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 User _user;
 final _dateTime = DateTime.now().millisecondsSinceEpoch.toString();
@@ -90,7 +91,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                         }),
                     Text(
                       'Send Money',
-                      style: TextStyle(
+                      style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w700, fontSize: 20.0),
                     ),
                   ],
@@ -131,17 +132,22 @@ class SendMoneyPageState extends State<SendMoneyPage> {
           Container(
             margin: EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
-              backgroundImage: receiver.photoURL != "assets/face.jpg"
-                  ? NetworkImage(receiver.photoURL)
-                  : AssetImage('assets/face.jpg')),
+                backgroundImage: receiver.photoURL != "assets/face.jpg"
+                    ? NetworkImage(receiver.photoURL)
+                    : AssetImage('assets/face.jpg')),
           ),
+          // child: Text(receiver.displayName.substring(0, 1)),
           Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
                 receiver.displayName,
-                style: TextStyle(fontWeight: FontWeight.w700),
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w700, fontSize: 16),
+              ),
+              SizedBox(
+                height: 5,
               ),
               Row(
                 children: <Widget>[
@@ -155,7 +161,8 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                   ),
                   Text(
                     receiver.mobile,
-                    style: TextStyle(fontSize: 12.0, color: Color(0xFF929091)),
+                    style: GoogleFonts.roboto(
+                        fontSize: 16.0, color: Color(0xFF929091)),
                   ),
                 ],
               ),
@@ -183,7 +190,8 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                     const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0),
                 child: Text(
                   'Enter Amount',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.bold, fontSize: 16.0),
                 ),
               ),
               Padding(
@@ -193,8 +201,8 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                   children: <Widget>[
                     Text(
                       '\RM',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 30.0),
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.bold, fontSize: 35.0),
                     ),
                     Expanded(
                       child: Padding(
@@ -202,8 +210,8 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                         child: TextField(
                           controller: _amountController,
                           keyboardType: TextInputType.number,
-                          style: TextStyle(
-                              fontSize: 30.0,
+                          style: GoogleFonts.roboto(
+                              fontSize: 35.0,
                               fontWeight: FontWeight.w700,
                               color: Colors.black),
                           decoration: InputDecoration(
@@ -312,10 +320,10 @@ class SendMoneyPageState extends State<SendMoneyPage> {
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
           child: Text(
             'SEND',
-            style: TextStyle(
+            style: GoogleFonts.roboto(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontSize: 20.0),
+                fontSize: 22.0),
             textAlign: TextAlign.center,
           ),
         ),

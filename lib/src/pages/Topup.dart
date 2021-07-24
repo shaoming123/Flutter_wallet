@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/model/Failure.dart';
 import 'package:flutter_wallet_app/src/model/Successful.dart';
+import 'package:flutter_wallet_app/src/pages/infoValidate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,6 +28,8 @@ class _TopupState extends State<Topup> {
   String receiverUID = "";
   String timestamp = "";
   String transactionid = "";
+  String _email = "";
+  String _mobile = "";
   String balance;
   User _user;
 
@@ -41,6 +45,17 @@ class _TopupState extends State<Topup> {
   void initState() {
     _razorpay = Razorpay();
     _user = _auth.currentUser;
+
+    _userRef
+        .child("user")
+        .child(_user.uid)
+        .once()
+        .then((DataSnapshot snapshot) {
+      setState(() {
+        _mobile = snapshot.value["mobile"];
+        _email = snapshot.value["email"];
+      });
+    });
 
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -87,7 +102,7 @@ class _TopupState extends State<Topup> {
           children: <Widget>[
             Padding(
                 padding:
-                    const EdgeInsets.only(top: 30.0, left: 16.0, right: 16.0),
+                    const EdgeInsets.only(top: 50.0, left: 16.0, right: 16.0),
                 child: Row(
                   children: <Widget>[
                     IconButton(
@@ -97,8 +112,8 @@ class _TopupState extends State<Topup> {
                         }),
                     Text(
                       'Top up wallet',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20.0),
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w700, fontSize: 25.0),
                     ),
                   ],
                 )),
@@ -121,20 +136,20 @@ class _TopupState extends State<Topup> {
                               left: 16.0, right: 16.0, top: 8.0),
                           child: Text(
                             'Enter Amount',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 14.0),
+                            style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.bold, fontSize: 16.0),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 16.0, right: 16.0, bottom: 20),
+                              left: 18.0, right: 16.0, bottom: 20),
                           child: Row(
                             children: <Widget>[
                               Text(
                                 '\RM',
-                                style: TextStyle(
+                                style: GoogleFonts.roboto(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 30.0),
+                                    fontSize: 35.0),
                               ),
                               Expanded(
                                 child: Padding(
@@ -142,13 +157,13 @@ class _TopupState extends State<Topup> {
                                   child: TextField(
                                     controller: _controller,
                                     keyboardType: TextInputType.number,
-                                    style: TextStyle(
-                                        fontSize: 30.0,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 35.0,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.black),
                                     decoration: InputDecoration(
                                         hintText: 'Amount',
-                                        labelStyle: TextStyle(
+                                        labelStyle: GoogleFonts.roboto(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 25.0)),
                                   ),
@@ -177,8 +192,8 @@ class _TopupState extends State<Topup> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 12.0),
                             child: Text(
-                              'SEND',
-                              style: TextStyle(
+                              'Top up',
+                              style: GoogleFonts.roboto(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                   fontSize: 20.0),
@@ -205,11 +220,11 @@ class _TopupState extends State<Topup> {
           (double.parse(_controller.text) * 100.roundToDouble()).toString(),
       'name': 'Ming.',
       'description': 'Top up wallet',
-      'prefill': {'contact': '0167108890', 'email': 'asda@sdsd.com'},
+      'prefill': {'contact': "0" + _mobile, 'email': _email},
       'external': {
         'wallets': [''],
-        'currency': 'MYR'
-      }
+      },
+      'currency': 'MYR'
     };
 
     try {

@@ -1,4 +1,5 @@
 // @dart=2.9
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
 import 'package:flutter_wallet_app/src/model/QRscan.dart';
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
       values.forEach((k, v) {
         DateTime _unixTimestamp =
             DateTime.fromMillisecondsSinceEpoch(int.parse(v["timestamp"]));
-        String _date = DateFormat.yMMMMd('en_US').format(_unixTimestamp);
+        String _date = DateFormat('dd MMMM yyyy').format(_unixTimestamp);
         double _amount = double.parse(v["amount"]);
         setState(() {
           if (user.uid == v["receiverUID"] || user.uid == v["senderUID"]) {
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               else
                 histories.add(HistoryModel(
                     'images/ico_receive_money.png',
-                    'transfer to ' + v['receiverDisplayName'],
+                    'Transfer to ' + v['receiverDisplayName'],
                     _amount,
                     _date,
                     false));
@@ -101,11 +102,17 @@ class _HomePageState extends State<HomePage> {
                     ? NetworkImage(user.photoURL)
                     : AssetImage('assets/face.jpg')),
         SizedBox(width: 15),
-        TitleText(text: "Hello,"),
-        Text(user.displayName ?? "user",
-            style: GoogleFonts.merriweather(
+        Text(
+          "Hello,",
+          style: GoogleFonts.roboto(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(" " + user.displayName ?? " user",
+            style: GoogleFonts.roboto(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
                 color: LightColor.navyBlue2)),
         Expanded(
           child: SizedBox(),
@@ -147,9 +154,9 @@ class _HomePageState extends State<HomePage> {
             Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: Text("Scan",
-                    style: GoogleFonts.merriweather(
+                    style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 15,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff76797e))))
           ]),
@@ -179,9 +186,9 @@ class _HomePageState extends State<HomePage> {
             Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: Text("Transfer",
-                    style: GoogleFonts.merriweather(
+                    style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 15,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff76797e))))
           ]),
@@ -210,9 +217,9 @@ class _HomePageState extends State<HomePage> {
             Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: Text("Request",
-                    style: GoogleFonts.merriweather(
+                    style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 15,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff76797e))))
           ]),
@@ -248,11 +255,10 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       contentPadding: EdgeInsets.symmetric(),
-      title: TitleText(
-        text: historyType,
-        fontSize: 14,
-      ),
-      subtitle: Text(date),
+      title: Text(historyType,
+          style: GoogleFonts.roboto(fontWeight: FontWeight.bold)),
+      subtitle:
+          Text(date, style: GoogleFonts.roboto(fontWeight: FontWeight.w500)),
       trailing: Container(
           height: 30,
           width: 60,
@@ -261,8 +267,9 @@ class _HomePageState extends State<HomePage> {
             color: LightColor.lightGrey,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          child: Text(amount.toString(),
-              style: GoogleFonts.merriweather(
+          child: Text(
+              isReceiver ? "+ " + amount.toString() : "- " + amount.toString(),
+              style: GoogleFonts.roboto(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: isReceiver ? Colors.green : Colors.red))),
@@ -286,7 +293,9 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 40,
                     ),
-                    TitleText(text: "My wallet"),
+                    Text("My wallet",
+                        style: GoogleFonts.roboto(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
                     SizedBox(
                       height: 20,
                     ),
@@ -294,19 +303,20 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 50,
                     ),
-                    TitleText(
-                      text: "Operations",
-                    ),
+                    Text("Operations",
+                        style: GoogleFonts.roboto(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
                     SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
                     _operationsWidget(),
                     SizedBox(
                       height: 40,
                     ),
-                    TitleText(
-                      text: "Latest Transactions",
-                    ),
+                    Text("Latest Transactions",
+                        style: GoogleFonts.roboto(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 15),
                     _transectionList(),
                   ],
                 )),

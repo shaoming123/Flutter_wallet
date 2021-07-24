@@ -9,6 +9,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_wallet_app/src/model/receiver_model.dart';
 import 'package:flutter_wallet_app/src/pages/send_money_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:one_context/one_context.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -112,8 +113,8 @@ class _QRscreenState extends State<QRscreen> {
                           }),
                       Text(
                         'Receive Money',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20.0),
+                        style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w700, fontSize: 23.0),
                       ),
                     ],
                   )),
@@ -134,7 +135,7 @@ class _QRscreenState extends State<QRscreen> {
 
   Future<ui.Image> _loadOverlayImage() async {
     final completer = Completer<ui.Image>();
-    final byteData = await rootBundle.load('assets/face.jpg');
+    final byteData = await rootBundle.load('assets/logo.PNG');
     ui.decodeImageFromList(byteData.buffer.asUint8List(), completer.complete);
     return completer.future;
   }

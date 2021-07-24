@@ -4,6 +4,7 @@ import 'package:flutter_wallet_app/src/model/receiver_model.dart';
 import 'package:flutter_wallet_app/src/pages/send_money_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final _userRef = FirebaseDatabase(
@@ -84,7 +85,7 @@ class SelectAccountPageState extends State<SelectAccountPage> {
           children: <Widget>[
             Padding(
                 padding:
-                    const EdgeInsets.only(top: 30.0, left: 16.0, right: 16.0),
+                    const EdgeInsets.only(top: 40.0, left: 16.0, right: 16.0),
                 child: Row(
                   children: <Widget>[
                     IconButton(
@@ -94,8 +95,8 @@ class SelectAccountPageState extends State<SelectAccountPage> {
                         }),
                     Text(
                       'Send Money',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 20.0),
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w700, fontSize: 25.0),
                     ),
                   ],
                 )),
@@ -117,8 +118,8 @@ class SelectAccountPageState extends State<SelectAccountPage> {
             child: TextField(
               controller: searchController,
               decoration: InputDecoration.collapsed(
-                hintText: 'Search for Phone number or Username',
-              ),
+                  hintText: 'Search for Phone number or Username',
+                  hintStyle: GoogleFonts.roboto()),
               onChanged: _searchTextChanged,
             ),
           ),
@@ -191,7 +192,11 @@ class SelectAccountPageState extends State<SelectAccountPage> {
               children: <Widget>[
                 Text(
                   receiver.displayName,
-                  style: TextStyle(fontWeight: FontWeight.w700),
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w700, fontSize: 16),
+                ),
+                SizedBox(
+                  height: 5,
                 ),
                 Row(
                   children: <Widget>[
@@ -205,8 +210,8 @@ class SelectAccountPageState extends State<SelectAccountPage> {
                     ),
                     Text(
                       receiver.mobile,
-                      style:
-                          TextStyle(fontSize: 12.0, color: Color(0xFF929091)),
+                      style: GoogleFonts.roboto(
+                          fontSize: 14.0, color: Color(0xFF929091)),
                     ),
                   ],
                 ),

@@ -40,7 +40,8 @@ class _BalanceCardState extends State<BalanceCard> {
         .once()
         .then((DataSnapshot snapshot) {
       setState(() {
-        balance = snapshot.value;
+        double intBalance = double.parse(snapshot.value);
+        balance = intBalance.toStringAsFixed(2).toString();
       });
     });
   }
@@ -62,8 +63,8 @@ class _BalanceCardState extends State<BalanceCard> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Total Balance,',
-                      style: TextStyle(
+                      'Total Balance',
+                      style: GoogleFonts.roboto(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: LightColor.lightNavyBlue),
@@ -74,14 +75,14 @@ class _BalanceCardState extends State<BalanceCard> {
                       children: <Widget>[
                         Text(
                           'RM ',
-                          style: TextStyle(
+                          style: GoogleFonts.roboto(
                               fontSize: 35,
                               fontWeight: FontWeight.w500,
                               color: LightColor.yellow.withAlpha(200)),
                         ),
                         Text(
                           balance ?? "Loading",
-                          style: GoogleFonts.merriweather(
+                          style: GoogleFonts.roboto(
                               textStyle: Theme.of(context).textTheme.headline4,
                               fontSize: 35,
                               fontWeight: FontWeight.w800,
@@ -147,7 +148,8 @@ class _BalanceCardState extends State<BalanceCard> {
                                 ),
                                 SizedBox(width: 5),
                                 Text("Top up",
-                                    style: TextStyle(color: Colors.white)),
+                                    style: GoogleFonts.roboto(
+                                        color: Colors.white)),
                               ],
                             )))
                   ],

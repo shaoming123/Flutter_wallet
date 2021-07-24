@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final _userRef = FirebaseDatabase(
@@ -63,9 +64,9 @@ class MapScreenState extends State<ProfilePage>
                               padding: EdgeInsets.only(left: 5.0),
                               child: new Text(
                                 'My Profile',
-                                style: TextStyle(
+                                style: GoogleFonts.roboto(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
+                                    fontSize: 25.0,
                                     color: Colors.black),
                               ),
                             )
@@ -84,7 +85,8 @@ class MapScreenState extends State<ProfilePage>
                                             ?.contains('null') ==
                                         false
                                     ? NetworkImage(_user.photoURL)
-                                    : AssetImage('assets/face.jpg')),
+                                    : AssetImage('assets/face.jpg'),
+                                radius: 30.0),
                           ],
                         ),
                       ]),
@@ -113,8 +115,8 @@ class MapScreenState extends State<ProfilePage>
                                 children: <Widget>[
                                   new Text(
                                     'Parsonal Information',
-                                    style: TextStyle(
-                                        fontSize: 18.0,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 20.0,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -126,6 +128,9 @@ class MapScreenState extends State<ProfilePage>
                               )
                             ],
                           )),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Padding(
                           padding: EdgeInsets.only(
                               left: 25.0, right: 25.0, top: 25.0),
@@ -137,15 +142,18 @@ class MapScreenState extends State<ProfilePage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   new Text(
-                                    'Display Name',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
+                                    'Name',
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18.0,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ],
                           )),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Padding(
                           padding: EdgeInsets.only(
                               left: 25.0, right: 25.0, top: 2.0),
@@ -155,13 +163,16 @@ class MapScreenState extends State<ProfilePage>
                               new Flexible(
                                 child: new Text(
                                   _displayName ?? "Loading",
-                                  style: TextStyle(
-                                    fontSize: 16.0,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 18.0,
                                   ),
                                 ),
                               ),
                             ],
                           )),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Padding(
                           padding: EdgeInsets.only(
                               left: 25.0, right: 25.0, top: 25.0),
@@ -174,14 +185,17 @@ class MapScreenState extends State<ProfilePage>
                                 children: <Widget>[
                                   new Text(
                                     'Email',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18.0,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ],
                           )),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Padding(
                           padding: EdgeInsets.only(
                               left: 25.0, right: 25.0, top: 2.0),
@@ -191,13 +205,16 @@ class MapScreenState extends State<ProfilePage>
                               new Flexible(
                                 child: Text(
                                   _email ?? "Loading",
-                                  style: TextStyle(
-                                    fontSize: 16.0,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 18.0,
                                   ),
                                 ),
                               ),
                             ],
                           )),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Padding(
                           padding: EdgeInsets.only(
                               left: 25.0, right: 25.0, top: 25.0),
@@ -210,14 +227,17 @@ class MapScreenState extends State<ProfilePage>
                                 children: <Widget>[
                                   new Text(
                                     'Mobile',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18.0,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ],
                           )),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Padding(
                           padding: EdgeInsets.only(
                               left: 25.0, right: 25.0, top: 2.0),
@@ -227,8 +247,8 @@ class MapScreenState extends State<ProfilePage>
                               new Flexible(
                                 child: Text(
                                   _mobile ?? "Loading",
-                                  style: TextStyle(
-                                    fontSize: 16.0,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 18.0,
                                   ),
                                 ),
                               ),
