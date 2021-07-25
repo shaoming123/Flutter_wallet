@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   User user;
   bool _hasInfo = true;
   List<HistoryModel> histories = [];
+  String _displayName = "";
 
   @override
   void initState() {
@@ -43,6 +44,9 @@ class _HomePageState extends State<HomePage> {
         .child(user.uid)
         .once()
         .then((DataSnapshot snapshot) {
+      _displayName = snapshot.value["displayName"] != ""
+          ? snapshot.value["displayName"]
+          : "";
       if (snapshot.value["displayName"] == "" ||
           snapshot.value["mobile"] == "") {
         setState(() {
@@ -103,13 +107,13 @@ class _HomePageState extends State<HomePage> {
                     : AssetImage('assets/face.jpg')),
         SizedBox(width: 15),
         Text(
-          "Hello,",
+          "Hello, ",
           style: GoogleFonts.roboto(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Text(" " + user.displayName ?? " user",
+        Text(_displayName ?? " user",
             style: GoogleFonts.roboto(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

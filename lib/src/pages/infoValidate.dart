@@ -241,7 +241,10 @@ class MapScreenState extends State<InfoValidate>
   }
 
   void _updateInfo() {
-    user.updateDisplayName(_displayNameController.text);
+    if (user.displayName != null) {
+      print("user" + user.displayName);
+      user.updateDisplayName(_displayNameController.text);
+    }
 
     _databaseReference.child("data").child("user").child(user.uid).update({
       "displayName": _displayNameController.text,
