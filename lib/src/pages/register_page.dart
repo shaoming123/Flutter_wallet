@@ -12,6 +12,7 @@ import '../widgets/otherSignIn.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final databaseReference = FirebaseDatabase.instance.reference();
+final _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class RegisterPage extends StatefulWidget {
   final String title = 'Registration';
@@ -27,10 +28,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool _success;
   String _userEmail = '';
+  String _errorMsg = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -232,7 +235,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ? ''
                         : (_success
                             ? 'Successfully registered $_userEmail'
-                            : 'Registration failed')),
+                            : _errorMsg)),
                   ),
                   OtherProvidersSignInSection(),
                   FadeAnimation(
@@ -278,35 +281,43 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _register() async {
-    final User user = (await _auth.createUserWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    ))
-        .user;
-    if (user != null) {
-      setState(() {
-        _success = true;
-        _userEmail = user.email;
-      });
-      databaseReference
-          .child("data")
-          .child("user")
-          .child(user.uid)
-          .once()
-          .then((DataSnapshot snapshot) {
-        if (snapshot.value == null) {
-          databaseReference.child("data").child("user").child(user.uid).set({
-            "uid": user.uid,
-            "email": user.email,
-            "balance": "0",
-            "mobile": "",
-            "displayName": "",
-            "photoURL": "assets/face.jpg"
-          });
-        }
-      });
-    } else {
-      _success = false;
+    try {
+      final User user = (await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      ))
+          .user;
+      if (user != null) {
+        setState(() {
+          _success = true;
+          _userEmail = user.email;
+        });
+        databaseReference
+            .child("data")
+            .child("user")
+            .child(user.uid)
+            .once()
+            .then((DataSnapshot snapshot) {
+          if (snapshot.value == null) {
+            databaseReference.child("data").child("user").child(user.uid).set({
+              "uid": user.uid,
+              "email": user.email,
+              "balance": "0",
+              "mobile": "",
+              "displayName": "",
+              "photoURL": "assets/face.jpg"
+            });
+          }
+        });
+      } else {
+        _success = false;
+      }
+    } catch (e) {
+      _scaffoldKey.currentState.showSnackBar(
+        new SnackBar(
+          content: Text(await e.message),
+        ),
+      );
     }
   }
 }
