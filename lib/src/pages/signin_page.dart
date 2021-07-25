@@ -165,7 +165,6 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
             obscureText: false,
             controller: _emailController,
             decoration: new InputDecoration(
-              labelText: 'Email',
               contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey[400])),
@@ -190,7 +189,6 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
           TextFormField(
             controller: _passwordController,
             decoration: new InputDecoration(
-              labelText: 'Password',
               contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey[400])),
