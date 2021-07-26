@@ -280,47 +280,49 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return !_hasInfo
         ? InfoValidate()
-        : Scaffold(
-            body: SafeArea(
-                child: SingleChildScrollView(
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(height: 35),
-                    _appBar(),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Text("My wallet",
-                        style: GoogleFonts.roboto(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    BalanceCard(),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Text("Operations",
-                        style: GoogleFonts.roboto(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    _operationsWidget(),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Text("Latest Transactions",
-                        style: GoogleFonts.roboto(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 15),
-                    _transectionList(),
-                  ],
-                )),
-          )));
+        : new WillPopScope(
+            onWillPop: () async => false,
+            child: Scaffold(
+                body: SafeArea(
+                    child: SingleChildScrollView(
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 35),
+                      _appBar(),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Text("My wallet",
+                          style: GoogleFonts.roboto(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      BalanceCard(),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Text("Operations",
+                          style: GoogleFonts.roboto(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      _operationsWidget(),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Text("Latest Transactions",
+                          style: GoogleFonts.roboto(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 15),
+                      _transectionList(),
+                    ],
+                  )),
+            ))));
   }
 }
 
