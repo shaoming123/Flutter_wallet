@@ -30,7 +30,8 @@ class _TopupState extends State<Topup> {
   String transactionid = "";
   String _email = "";
   String _mobile = "";
-  String balance;
+  String _name = "";
+  String balance = "";
   User _user;
 
   final dateTime = DateTime.now().millisecondsSinceEpoch.toString();
@@ -54,6 +55,7 @@ class _TopupState extends State<Topup> {
       setState(() {
         _mobile = snapshot.value["mobile"];
         _email = snapshot.value["email"];
+        _name = snapshot.value["displayName"];
       });
     });
 
@@ -64,11 +66,13 @@ class _TopupState extends State<Topup> {
     super.initState();
   }
 
-  void _topupHis(amount) {
+  void _topupHis() {
     transactionid = _user.uid + dateTime;
+    String top_amount = _controller.text.toString();
+
     _userRef.child("transaction").child(transactionid).set({
       "id": _user.uid + dateTime,
-      "amount": amount,
+      "amount": top_amount,
       "category": "Top up",
       "timestamp": dateTime,
       "senderDisplayName": senderDisplayName,
@@ -76,21 +80,41 @@ class _TopupState extends State<Topup> {
       "receiverDisplayName": receiverDisplayName,
       "receiverUID": _user.uid
     });
-  }
 
-  void _fetchBalance(amount) {
-    _userRef.child("user").child(_user.uid).child("balance")
-      ..once().then((DataSnapshot snapshot) {
-        setState(() {
-          balance = snapshot.value;
-        });
-        double amountTop = double.parse(amount);
-        double userbalance = double.parse(balance);
-
-        var _total = (amountTop + userbalance).toString();
-        _userRef.child("user").child(_user.uid).update({"balance": _total});
+    _userRef
+        .child("user")
+        .child(_user.uid)
+        .child("balance")
+        .once()
+        .then((DataSnapshot snapshot) {
+      setState(() {
+        balance = snapshot.value;
       });
+      double _amountTop = double.parse(top_amount);
+      double _userbalance = double.parse(balance);
+
+      String _total = (_amountTop + _userbalance).toString();
+      print(_amountTop);
+      _userRef.child("user").child(_user.uid).update({"balance": _total});
+    }).catchError((error) {
+      print("Something went wrong: ${error.message}");
+    });
   }
+
+  // void _fetchBalance() {
+  //   _userRef.child("user").child(_user.uid).child("balance")
+  //     ..once().then((DataSnapshot snapshot) {
+  //       setState(() {
+  //         balance = snapshot.value;
+  //       });
+  //       double _amountTop = double.parse(_controller.text);
+  //       double _userbalance = double.parse(balance);
+
+  //       String _total = (_amountTop + _userbalance).toString();
+  //       print(_amountTop);
+  //       _userRef.child("user").child(_user.uid).update({"balance": _total});
+  //     });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -164,11 +188,73 @@ class _TopupState extends State<Topup> {
                                     decoration: InputDecoration(
                                         hintText: 'Amount',
                                         labelStyle: GoogleFonts.roboto(
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.normal,
                                             fontSize: 25.0)),
                                   ),
                                 ),
                               )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              RaisedButton(
+                                child: Text(
+                                  'RM 100',
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    // shouldDisplay = !shouldDisplay;
+                                    _controller.text = "100";
+                                  });
+                                },
+                                splashColor: Colors.yellow,
+                                color: Color(0xFFF4F4F4),
+                                textColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                              ),
+                              RaisedButton(
+                                child: Text(
+                                  'RM 500',
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    // shouldDisplay = !shouldDisplay;
+                                    _controller.text = "500";
+                                  });
+                                },
+                                color: Color(0xFFF4F4F4),
+                                textColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                              ),
+                              RaisedButton(
+                                child: Text(
+                                  'RM 1000',
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _controller.text = "1000";
+                                  });
+                                },
+                                color: Color(0xFFF4F4F4),
+                                textColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                              ),
                             ],
                           ),
                         ),
@@ -214,20 +300,20 @@ class _TopupState extends State<Topup> {
   }
 
   void openCheckout() async {
-    var options = {
-      'key': 'rzp_test_HrKYY6mdiMRJLt',
-      'amount':
-          (double.parse(_controller.text) * 100.roundToDouble()).toString(),
-      'name': 'Ming.',
-      'description': 'Top up wallet',
-      'prefill': {'contact': "0" + _mobile, 'email': _email},
-      'external': {
-        'wallets': [''],
-      },
-      'currency': 'MYR'
-    };
-
     try {
+      var options = {
+        'key': 'rzp_test_HrKYY6mdiMRJLt',
+        'amount':
+            (double.parse(_controller.text) * 100.roundToDouble()).toString(),
+        'name': _name,
+        'description': 'Top up wallet',
+        'prefill': {'contact': "0" + _mobile, 'email': _email},
+        'external': {
+          'wallets': [''],
+        },
+        'currency': 'MYR'
+      };
+
       _razorpay.open(options);
     } catch (e) {
       debugPrint('Error: e');
@@ -235,10 +321,10 @@ class _TopupState extends State<Topup> {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    String topupAmount =
-        (double.parse(_controller.text).roundToDouble()).toString();
-    _topupHis(topupAmount);
-    _fetchBalance(topupAmount);
+    // String topupAmount =
+    //     (double.parse(_controller.text).roundToDouble()).toString();
+    _topupHis();
+
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => SuccessfulPage()),

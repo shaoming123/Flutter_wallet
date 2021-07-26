@@ -1,5 +1,7 @@
 // @dart=2.9
 
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/button_builder.dart';
@@ -28,249 +30,316 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool _success;
   String _userEmail = '';
+  String _passwordError = "";
   String _errorMsg = '';
+
+  bool validateStructure(String value) {
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[,.!@#\$&*~<>?:%^()]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 20,
-            color: Colors.black,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-          child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
-                Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 0),
-            child: Column(
-              children: <Widget>[
-                FadeAnimation(
-                    1,
-                    Text(
-                      "Sign up",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    )),
-                SizedBox(
-                  height: 20,
-                ),
-                FadeAnimation(
-                    1.2,
-                    Text(
-                      "Create an account, It's free",
-                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                    )),
-              ],
+    return new GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          resizeToAvoidBottomInset: true,
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            elevation: 0,
+            brightness: Brightness.light,
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+                color: Colors.black,
+              ),
             ),
           ),
-          Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          body: Container(
+              height: MediaQuery.of(context).size.height * 2,
+              width: double.infinity,
+              child: SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 40, vertical: 0),
+                        child: Column(
                           children: <Widget>[
-                            Text(
-                              'Email',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black87),
-                            ),
+                            FadeAnimation(
+                                1,
+                                Text(
+                                  "Sign up",
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                )),
                             SizedBox(
-                              height: 5,
-                            ),
-                            TextFormField(
-                              obscureText: false,
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 10),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey[400])),
-                                border: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey[400])),
-                              ),
-                              validator: (String value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Text(
-                              'Password',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black87),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            TextFormField(
-                              controller: _passwordController,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 10),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey[400])),
-                                border: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey[400])),
-                              ),
-                              validator: (String value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                if (value.length < 6)
-                                  return 'Password should be at least 6 characters';
-                                return null;
-                              },
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Text(
-                              'Confirm Password',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black87),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            TextFormField(
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 10),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey[400])),
-                                border: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey[400])),
-                              ),
-                              validator: (String value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                if (value != _passwordController.text)
-                                  return 'The passwords are not matched';
-                                return null;
-                              },
-                            ),
-                            SizedBox(
-                              height: 30,
+                              height: 20,
                             ),
                             FadeAnimation(
-                                1.5,
-                                Container(
-                                  padding: EdgeInsets.only(top: 3, left: 3),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      border: Border(
-                                        bottom: BorderSide(color: Colors.black),
-                                        top: BorderSide(color: Colors.black),
-                                        left: BorderSide(color: Colors.black),
-                                        right: BorderSide(color: Colors.black),
-                                      )),
-                                  child: MaterialButton(
-                                    minWidth: double.infinity,
-                                    height: 60,
-                                    onPressed: () {
-                                      if (_formKey.currentState.validate()) {
-                                        _register();
-                                      }
-                                    },
-                                    color: Colors.greenAccent,
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                    child: Text(
-                                      "Sign up",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                  ),
+                                1.2,
+                                Text(
+                                  "Create an account, It's free",
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.grey[700]),
                                 )),
-                          ])),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(_success == null
-                        ? ''
-                        : (_success
-                            ? 'Successfully registered $_userEmail'
-                            : _errorMsg)),
-                  ),
-                  OtherProvidersSignInSection(),
-                  FadeAnimation(
-                      1.6,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Already have an account?"),
-                          RaisedButton(
-                            padding: EdgeInsets.all(0),
-                            elevation: 0,
-                            hoverElevation: 0,
-                            focusElevation: 0,
-                            highlightElevation: 0,
-                            color: Colors.white,
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 18),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignInPage()),
-                              );
-                            },
-                          ),
-                        ],
-                      )),
-                ],
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 40),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          'Email',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black87),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        TextFormField(
+                                          obscureText: false,
+                                          controller: _emailController,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 0,
+                                                    horizontal: 10),
+                                            enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey[400])),
+                                            border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey[400])),
+                                          ),
+                                          validator: (String value) {
+                                            if (value.isEmpty) {
+                                              return 'Please enter some text';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        Text(
+                                          'Password',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black87),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        TextFormField(
+                                          controller: _passwordController,
+                                          obscureText: true,
+                                          decoration: new InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 0,
+                                                    horizontal: 10),
+                                            enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey[400])),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.grey[400]),
+                                            ),
+                                            disabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(4)),
+                                              borderSide: BorderSide(
+                                                  width: 1, color: Colors.red),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.grey[400],
+                                                  width: 2.0),
+                                            ),
+                                            errorText: _passwordError.isEmpty
+                                                ? null
+                                                : _passwordError,
+                                          ),
+                                          validator: (String value) {
+                                            if (value.isEmpty) {
+                                              return 'Please enter some text';
+                                            }
+                                            if (value.length < 8) {
+                                              return 'Password should be at least 8 characters';
+                                            }
+
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        Text(
+                                          'Confirm Password',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black87),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        TextFormField(
+                                          obscureText: true,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 0,
+                                                    horizontal: 10),
+                                            enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey[400])),
+                                            border: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey[400])),
+                                          ),
+                                          validator: (String value) {
+                                            if (value.isEmpty) {
+                                              return 'Please enter some text';
+                                            }
+                                            if (value !=
+                                                _passwordController.text)
+                                              return 'The passwords are not matched';
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        FadeAnimation(
+                                            1.5,
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  top: 3, left: 3),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                        color: Colors.black),
+                                                    top: BorderSide(
+                                                        color: Colors.black),
+                                                    left: BorderSide(
+                                                        color: Colors.black),
+                                                    right: BorderSide(
+                                                        color: Colors.black),
+                                                  )),
+                                              child: MaterialButton(
+                                                minWidth: double.infinity,
+                                                height: 60,
+                                                onPressed: () {
+                                                  if (_formKey.currentState
+                                                      .validate()) {
+                                                    if (!validateStructure(
+                                                        _passwordController
+                                                            .text)) {
+                                                      setState(() {
+                                                        print(
+                                                            _passwordController
+                                                                .text);
+                                                        _passwordError =
+                                                            "Password should contains at least one \nupper case, lower case, digit and special \ncharacter ";
+                                                      });
+                                                      return;
+                                                    } else {
+                                                      _register();
+                                                    }
+                                                  }
+                                                },
+                                                color: Colors.greenAccent,
+                                                elevation: 0,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50)),
+                                                child: Text(
+                                                  "Sign up",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 18),
+                                                ),
+                                              ),
+                                            )),
+                                      ])),
+                              Container(
+                                alignment: Alignment.center,
+                                child: Text(_success == null
+                                    ? ''
+                                    : (_success
+                                        ? 'Successfully registered $_userEmail'
+                                        : _errorMsg)),
+                              ),
+                              OtherProvidersSignInSection(),
+                              FadeAnimation(
+                                  1.6,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text("Already have an account?"),
+                                      RaisedButton(
+                                        padding: EdgeInsets.all(0),
+                                        elevation: 0,
+                                        hoverElevation: 0,
+                                        focusElevation: 0,
+                                        highlightElevation: 0,
+                                        color: Colors.white,
+                                        child: Text(
+                                          'Sign In',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 18),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SignInPage()),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  )),
+                            ],
+                          )),
+                    ]),
               )),
-        ]),
-      )),
-    );
+        ));
   }
 
   @override
@@ -309,6 +378,10 @@ class _RegisterPageState extends State<RegisterPage> {
             });
           }
         });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SignInPage()),
+        );
       } else {
         _success = false;
       }

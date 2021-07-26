@@ -31,106 +31,113 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          brightness: Brightness.light,
+    return new GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.white,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              size: 20,
-              color: Colors.black,
+          appBar: AppBar(
+            elevation: 0,
+            brightness: Brightness.light,
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+                color: Colors.black,
+              ),
             ),
           ),
-        ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        FadeAnimation(
-                            1,
-                            Text(
-                              "Login",
-                              style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
-                            )),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        FadeAnimation(
-                            1.2,
-                            Text(
-                              "Login to your account",
-                              style: TextStyle(
-                                  fontSize: 15, color: Colors.grey[700]),
-                            )),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Column(
+          body: SingleChildScrollView(
+              child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Column(
                         children: <Widget>[
-                          FadeAnimation(1.2, _EmailPasswordForm()),
+                          FadeAnimation(
+                              1,
+                              Text(
+                                "Login",
+                                style: TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold),
+                              )),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          FadeAnimation(
+                              1.2,
+                              Text(
+                                "Login to your account",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.grey[700]),
+                              )),
                         ],
                       ),
-                    ),
-                    OtherProvidersSignInSection(),
-                    FadeAnimation(
-                        1.5,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: Column(
                           children: <Widget>[
-                            Text("Don't have an account?"),
-                            RaisedButton(
-                              padding: EdgeInsets.all(0),
-                              elevation: 0,
-                              hoverElevation: 0,
-                              focusElevation: 0,
-                              highlightElevation: 0,
-                              color: Colors.white,
-                              child: Text(
-                                'Sign up',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 18),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RegisterPage()),
-                                );
-                              },
-                            ),
+                            FadeAnimation(1.2, _EmailPasswordForm()),
                           ],
-                        )),
-                  ],
+                        ),
+                      ),
+                      OtherProvidersSignInSection(),
+                      FadeAnimation(
+                          1.5,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("Don't have an account?"),
+                              RaisedButton(
+                                padding: EdgeInsets.all(0),
+                                elevation: 0,
+                                hoverElevation: 0,
+                                focusElevation: 0,
+                                highlightElevation: 0,
+                                color: Colors.white,
+                                child: Text(
+                                  'Sign up',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RegisterPage()),
+                                  );
+                                },
+                              ),
+                            ],
+                          )),
+                    ],
+                  ),
                 ),
-              ),
-              // FadeAnimation(
-              //     1.2,
-              //     Container(
-              //       height: MediaQuery.of(context).size.height / 3,
-              //       decoration: BoxDecoration(
-              //           image: DecorationImage(
-              //               image: AssetImage('assets/background.png'),
-              //               fit: BoxFit.cover)),
-              //     ))
-            ],
-          ),
+                // FadeAnimation(
+                //     1.2,
+                //     Container(
+                //       height: MediaQuery.of(context).size.height / 3,
+                //       decoration: BoxDecoration(
+                //           image: DecorationImage(
+                //               image: AssetImage('assets/background.png'),
+                //               fit: BoxFit.cover)),
+                //     ))
+              ],
+            ),
+          )),
         ));
   }
 }

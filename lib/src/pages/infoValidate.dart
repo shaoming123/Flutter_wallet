@@ -40,6 +40,7 @@ class MapScreenState extends State<InfoValidate>
   Widget build(BuildContext context) {
     return Scaffold(
         body: new Container(
+      margin: EdgeInsets.symmetric(horizontal: 15),
       color: Colors.white,
       child: new ListView(
         children: <Widget>[
@@ -75,12 +76,14 @@ class MapScreenState extends State<InfoValidate>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             CircleAvatar(
-                                backgroundImage: user.photoURL
-                                            ?.toLowerCase()
-                                            ?.contains('null') ==
-                                        false
-                                    ? NetworkImage(user.photoURL)
-                                    : AssetImage('assets/face.jpg')),
+                              backgroundImage: user.photoURL
+                                          ?.toLowerCase()
+                                          ?.contains('null') ==
+                                      false
+                                  ? NetworkImage(user.photoURL)
+                                  : AssetImage('assets/face.jpg'),
+                              radius: 40,
+                            ),
                           ],
                         ),
                       ]),
@@ -206,22 +209,27 @@ class MapScreenState extends State<InfoValidate>
                             ],
                           )),
                       new Container(),
+                      SizedBox(
+                        height: 20,
+                      ),
                       MaterialButton(
                         minWidth: double.infinity,
                         height: 60,
                         onPressed: () async {
                           _updateInfo();
                         },
-                        color: Colors.greenAccent,
+                        color: Colors.yellowAccent,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50)),
                         child: Text(
                           "Confirm",
                           style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 18),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              color: Colors.black),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),

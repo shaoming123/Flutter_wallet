@@ -117,125 +117,131 @@ class HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFF4F4F4),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 15.0, top: 50.0, bottom: 25.0),
-              child: Text(
-                'Transactions History',
-                style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.w900, fontSize: 22.0),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 10.0),
-                child: Row(children: <Widget>[
-                  Expanded(
-                    child: Container(
-                        width: 50,
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 4,
-                              offset: Offset(0, 1),
-                            ),
-                          ],
-                        ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 5.0),
-                        child: DropdownButtonHideUnderline(
-                            child: ButtonTheme(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 30.0, vertical: 5.0),
-                                child: DropdownButton(
-                                    hint: Text('Category'),
-                                    value: _value,
-                                    icon: const Icon(Icons.arrow_downward),
-                                    elevation: 16,
-                                    items: [
-                                      DropdownMenuItem(
-                                        child: Text(
-                                          "All",
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        value: 1,
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text(
-                                          "Transfer",
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        value: 2,
-                                      ),
-                                      DropdownMenuItem(
-                                          child: Text(
-                                            "Received",
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          value: 3),
-                                      DropdownMenuItem(
-                                          child: Text(
-                                            "Top up",
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          value: 4),
-                                      DropdownMenuItem(
-                                          child: Text(
-                                            "Date",
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          value: 5),
-                                    ],
-                                    onChanged: (int value) {
-                                      setState(() {
-                                        _value = value;
-                                        if (value == 5) {
-                                          _selectDate(context);
-                                        } else {
-                                          _searchCategory(_value);
-                                        }
-                                      });
-                                    })))),
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          backgroundColor: Color(0xFFF4F4F4),
+          body: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15.0, top: 50.0, bottom: 25.0),
+                  child: Text(
+                    'Transactions History',
+                    style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w900, fontSize: 22.0),
                   ),
-                ]),
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 10.0),
+                    child: Row(children: <Widget>[
+                      Expanded(
+                        child: Container(
+                            width: 50,
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 4,
+                                  offset: Offset(0, 1),
+                                ),
+                              ],
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 5.0),
+                            child: DropdownButtonHideUnderline(
+                                child: ButtonTheme(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 30.0, vertical: 5.0),
+                                    child: DropdownButton(
+                                        hint: Text('Category'),
+                                        value: _value,
+                                        icon: const Icon(Icons.arrow_downward),
+                                        elevation: 16,
+                                        items: [
+                                          DropdownMenuItem(
+                                            child: Text(
+                                              "All",
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            value: 1,
+                                          ),
+                                          DropdownMenuItem(
+                                            child: Text(
+                                              "Transfer",
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            value: 2,
+                                          ),
+                                          DropdownMenuItem(
+                                              child: Text(
+                                                "Received",
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              value: 3),
+                                          DropdownMenuItem(
+                                              child: Text(
+                                                "Top up",
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              value: 4),
+                                          DropdownMenuItem(
+                                              child: Text(
+                                                "Date",
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              value: 5),
+                                        ],
+                                        onChanged: (int value) {
+                                          setState(() {
+                                            _value = value;
+                                            if (value == 5) {
+                                              _selectDate(context);
+                                            } else {
+                                              _searchCategory(_value);
+                                            }
+                                          });
+                                        })))),
+                      ),
+                    ]),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: _categoryResults.isEmpty && firstView
+                          ? histories.length
+                          : _categoryResults.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _historyWidget(_categoryResults.isEmpty
+                            ? histories[index]
+                            : _categoryResults[index]);
+                      }),
+                ),
+              ],
             ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: _categoryResults.isEmpty && firstView
-                      ? histories.length
-                      : _categoryResults.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _historyWidget(_categoryResults.isEmpty
-                        ? histories[index]
-                        : _categoryResults[index]);
-                  }),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 
   Widget _historyWidget(HistoryModel history) {

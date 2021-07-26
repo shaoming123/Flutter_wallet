@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/HistoryPage.dart';
+import 'package:flutter_wallet_app/src/pages/homePage.dart';
 import 'package:flutter_wallet_app/src/theme/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/': (_) => AuthTypeSelector(),
           '/history': (_) => HistoryPage(),
+          '/homepage': (_) => HomePage(),
           "/ProfilePage": (_) => ProfilePage(),
         },
         // ignore: missing_return

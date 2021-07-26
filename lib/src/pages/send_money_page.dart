@@ -248,6 +248,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
               .once()
               .then((DataSnapshot snapshot) {
             final String _senderBalance = snapshot.value;
+
             double _amountTop = double.parse(_amountController.text);
             double _userbalance = double.parse(_senderBalance);
             if (_userbalance >= _amountTop) {
@@ -255,61 +256,62 @@ class SendMoneyPageState extends State<SendMoneyPage> {
             } else {
               _isBalanceEnough = false;
             }
-          });
-          if (!_isBalanceEnough) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => FailurePage()),
-            );
-          } else {
-            _userRef.child("transaction").child(transactionid).set({
-              "id": transactionid,
-              "amount": _amountController.text,
-              "category": _category,
-              "timestamp": _dateTime,
-              "senderDisplayName": _user.displayName,
-              "senderUID": _user.uid,
-              "receiverDisplayName": receiver.displayName,
-              "receiverUID": receiver.uid
-            });
-            _userRef
-                .child("user")
-                .child(_user.uid)
-                .child("balance")
-                .once()
-                .then((DataSnapshot snapshot) {
-              final String _senderBalance = snapshot.value;
-              double _amountTop = double.parse(_amountController.text);
-              double _userbalance = double.parse(_senderBalance);
-              String _total = (-_amountTop + _userbalance).toString();
+
+            if (!_isBalanceEnough) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FailurePage()),
+              );
+            } else {
+              _userRef.child("transaction").child(transactionid).set({
+                "id": transactionid,
+                "amount": _amountController.text,
+                "category": _category,
+                "timestamp": _dateTime,
+                "senderDisplayName": _user.displayName,
+                "senderUID": _user.uid,
+                "receiverDisplayName": receiver.displayName,
+                "receiverUID": receiver.uid
+              });
               _userRef
                   .child("user")
                   .child(_user.uid)
-                  .update({"balance": _total});
-            });
+                  .child("balance")
+                  .once()
+                  .then((DataSnapshot snapshot) {
+                final String _senderBalance = snapshot.value;
+                double _amountTop = double.parse(_amountController.text);
+                double _userbalance = double.parse(_senderBalance);
+                String _total = (-_amountTop + _userbalance).toString();
+                _userRef
+                    .child("user")
+                    .child(_user.uid)
+                    .update({"balance": _total});
+              });
 
-            _userRef
-                .child("user")
-                .child(receiver.uid)
-                .child("balance")
-                .once()
-                .then((DataSnapshot snapshot) {
-              final String _senderBalance = snapshot.value;
-              double _amountTop = double.parse(_amountController.text);
-              double _userbalance = double.parse(_senderBalance);
-
-              String _total = (_amountTop + _userbalance).toString();
               _userRef
                   .child("user")
                   .child(receiver.uid)
-                  .update({"balance": _total});
-            });
+                  .child("balance")
+                  .once()
+                  .then((DataSnapshot snapshot) {
+                final String _senderBalance = snapshot.value;
+                double _amountTop = double.parse(_amountController.text);
+                double _userbalance = double.parse(_senderBalance);
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SuccessfulPage()),
-            );
-          }
+                String _total = (_amountTop + _userbalance).toString();
+                _userRef
+                    .child("user")
+                    .child(receiver.uid)
+                    .update({"balance": _total});
+              });
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SuccessfulPage()),
+              );
+            }
+          });
         },
         child: Container(
           width: double.infinity,
