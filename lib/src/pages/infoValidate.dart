@@ -193,6 +193,7 @@ class MapScreenState extends State<InfoValidate>
                               new Flexible(
                                 child: new TextFormField(
                                   controller: _mobileController,
+                                  keyboardType: TextInputType.number,
                                   validator: (String value) {
                                     if (value.isEmpty)
                                       return 'Please enter some text';
