@@ -216,7 +216,6 @@ class _TopupState extends State<Topup> {
                                     _controller.text = "100";
                                   });
                                 },
-                                splashColor: Colors.yellow,
                                 color: Color(0xFFF4F4F4),
                                 textColor: Colors.black,
                                 shape: RoundedRectangleBorder(

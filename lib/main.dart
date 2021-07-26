@@ -5,6 +5,7 @@ import 'package:flutter_wallet_app/src/theme/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:one_context/one_context.dart';
+import 'package:flutter/services.dart';
 
 import 'src/widgets/customRoute.dart';
 import 'src/pages/HistoryPage.dart';
@@ -15,6 +16,8 @@ import 'src/pages/auth_selector.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   runApp(App());
 }
