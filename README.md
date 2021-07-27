@@ -12,4 +12,5 @@ The
 7. click ctrl + f5 to run this project.
 
 # Warnining
-This app is only support Android
+1. This app is only support Android
+2. Google Sign In service only available with SHA1 key
