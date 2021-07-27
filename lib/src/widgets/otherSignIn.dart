@@ -120,7 +120,6 @@ class _OtherProvidersSignInSectionState
       });
       Navigator.pushNamed(context, "/");
     } catch (e) {
-      print(e);
       // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(
         SnackBar(

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wallet_app/src/pages/homePage.dart';
 
 class FailurePage extends StatelessWidget {
-  const FailurePage({Key? key}) : super(key: key);
+  final String message;
+  const FailurePage({Key? key, this.message = ''}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class FailurePage extends StatelessWidget {
                     height: 30,
                   ),
                   Text(
-                    'Payment Failed!',
+                    message.isNotEmpty ? message : 'Payment Failed!',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
