@@ -14,9 +14,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
 
 import './infoValidate.dart';
-import 'HistoryPage.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final databaseReference = FirebaseDatabase(
@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    checkInternet();
     user = _auth.currentUser;
     databaseReference
         .child("data")
@@ -95,6 +96,19 @@ class _HomePageState extends State<HomePage> {
       });
     });
     super.initState();
+  }
+
+  void checkInternet() async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {}
+    } on SocketException catch (_) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No Internet Connection!'),
+        ),
+      );
+    }
   }
 
   Widget _appBar() {
