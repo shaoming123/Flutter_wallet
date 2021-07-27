@@ -6,8 +6,7 @@ https://flutter.dev/docs/get-started/install
 3. Open this project
 4. Open pubspect.yaml at root directory <br>
 https://ibb.co/WpznMy7
-5. click  ctrl + s to download the dependencies <br>
-The 
+5. click  ctrl + s to download the dependencies
 6. Open main.dart
 7. click ctrl + f5 to run this project.
 
