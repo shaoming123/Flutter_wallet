@@ -67,7 +67,7 @@ class HistoryPageState extends State<HistoryPage> {
   }
 
   DateTime selectedDate = DateTime.now();
-  final formattedDate = DateFormat.yMMMMd('en_US');
+  final formattedDate = DateFormat('dd MMMM yyyy');
   List<HistoryModel> histories = [];
   List<HistoryModel> _categoryResults = [];
 
