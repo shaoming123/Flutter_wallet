@@ -9,7 +9,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 User _user;
-final _dateTime = DateTime.now().millisecondsSinceEpoch.toString();
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final _userRef = FirebaseDatabase(
         databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
@@ -235,8 +234,8 @@ class SendMoneyPageState extends State<SendMoneyPage> {
     bool _isBalanceEnough;
     String _category = "transfer";
     String transactionid = "";
-    final dateTime = DateTime.now().millisecondsSinceEpoch.toString();
-    transactionid = _user.uid + dateTime;
+    String _dateTime = DateTime.now().millisecondsSinceEpoch.toString();
+    transactionid = _user.uid + _dateTime;
     return Container(
       margin: EdgeInsets.all(16.0),
       child: GestureDetector(
@@ -247,7 +246,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
               .child("balance")
               .once()
               .then((DataSnapshot snapshot) {
-            final String _senderBalance = snapshot.value;
+            String _senderBalance = snapshot.value;
 
             double _amountTop = double.parse(_amountController.text);
             double _userbalance = double.parse(_senderBalance);
@@ -279,7 +278,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                   .child("balance")
                   .once()
                   .then((DataSnapshot snapshot) {
-                final String _senderBalance = snapshot.value;
+                String _senderBalance = snapshot.value;
                 double _amountTop = double.parse(_amountController.text);
                 double _userbalance = double.parse(_senderBalance);
                 String _total = (-_amountTop + _userbalance).toString();
@@ -295,7 +294,7 @@ class SendMoneyPageState extends State<SendMoneyPage> {
                   .child("balance")
                   .once()
                   .then((DataSnapshot snapshot) {
-                final String _senderBalance = snapshot.value;
+                String _senderBalance = snapshot.value;
                 double _amountTop = double.parse(_amountController.text);
                 double _userbalance = double.parse(_senderBalance);
 
