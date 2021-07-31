@@ -14,8 +14,6 @@ import 'package:one_context/one_context.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-User _user = _auth.currentUser;
 final _userRef = FirebaseDatabase(
         databaseURL: "https://fireflutter-bcac9-default-rtdb.firebaseio.com/")
     .reference()
@@ -28,7 +26,6 @@ Future<void> scanQR() async {
   try {
     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.QR);
-
     await _userRef.child(barcodeScanRes).once().then((DataSnapshot snapshot) {
       _receiver = ReceiverModel(
         snapshot.value["uid"],
@@ -55,8 +52,13 @@ class _QRscreenState extends State<QRscreen> {
   String _message = "qr code";
   @override
   void initState() {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    User _user = _auth.currentUser;
     String _json = _user.uid;
+
     setState(() {
+      _user.reload();
+      print(_user.displayName);
       _message = _json.toString();
     });
     super.initState();
@@ -64,7 +66,7 @@ class _QRscreenState extends State<QRscreen> {
 
   @override
   Widget build(BuildContext context) {
-    final qrFutureBuilder = FutureBuilder<ui.Image>(
+    FutureBuilder qrFutureBuilder = FutureBuilder<ui.Image>(
       future: _loadOverlayImage(),
       builder: (ctx, snapshot) {
         final size = 280.0;
@@ -134,7 +136,7 @@ class _QRscreenState extends State<QRscreen> {
   }
 
   Future<ui.Image> _loadOverlayImage() async {
-    final completer = Completer<ui.Image>();
+    Completer completer = Completer<ui.Image>();
     final byteData = await rootBundle.load('assets/logo.PNG');
     ui.decodeImageFromList(byteData.buffer.asUint8List(), completer.complete);
     return completer.future;
