@@ -10,6 +10,6 @@ https://ibb.co/WpznMy7
 6. Open main.dart
 7. click ctrl + f5 to run this project.
 
-# Warnining
+# Warning
 1. This app is only support Android
 2. Google Sign In service only available with SHA1 key
